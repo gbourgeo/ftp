@@ -1,0 +1,4 @@
+ls
+cd ..
+refresh
+\ls -ap
