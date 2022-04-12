@@ -1,4 +1,8 @@
 test/
 objs/
+obj/
 client
 server
+*.a
+.ftphist
+.vscode/

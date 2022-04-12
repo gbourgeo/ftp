@@ -3,11 +3,11 @@
 #
 # A registered user is stored as follow:
 #
-# 	type:name:pass:rights:
+#	type:name:pass:rights:
 #
 #
 # type		represent the type of user:
-# 			"C" is a client,
+#			"C" is a client,
 #			"S" is a server (soon to come).
 # name		represent the name of the user registered.
 # pass		represent the password to sign-in.

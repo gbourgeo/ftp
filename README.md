@@ -4,7 +4,8 @@
 
 ### Create the Server, the Client or both
 ```sh
-$> make server && ./server -h
+$> make server
+$> ./server -h
 server: -- Server Help
 
 NAME
@@ -34,14 +35,30 @@ DESCRIPTION
 		   Enables registered users mode.
 
 	port	Port to listen to.
-
-AUTHOR
-	Written by Gilles Bourgeois.
 ```
 ```sh
-$> make client && ./client
-Usage: ./client [server_address] [server_port]
+$> make client
+$> ./client -h
+client: -- Help
 
+NAME
+	client - ftp client
+
+USAGE
+	./client [OPTIONS]... ADDR PORT
+
+DESCRIPTION
+	Start a File Transfert Protocol client.
+
+	-v	    More verbose client.
+
+	-h, --help
+		    Print help and exit.
+
+	addr	Address to connect to.
+
+
+	port	Port to connect to.
 ```
  Or simply,
 ```sh
@@ -54,35 +71,59 @@ $> make
 - Display of SUCCESS or ERROR + explanation messages after each request.
 
 ## COMMANDS
-Those commands operate on the server side:
+Those commands are recognised by the server:
 ```
-- help        : list available commands
-- ls          : list the current directory
-- cd          : change the current directory
-- pwd         : displays the path of the current directory
-- get [file]  : get the _file_ file from the server to the client
-- put [file]  : send the _file_ file from the client to the server
-- mkdir [-pv] : create a directory
-- rmdir       : erase a directory
-- unlink      : erase a file
-- sign        : sign-in to the server
-- quit        : cut the connection
+- CDUP		Change to parent directory
+- CWD		Change working directory
+- DELE		Remove file from server
+- HELP		Display available commands
+- MKD		Create directory on server
+- NLST		Short catalog
+- LIST		File listing
+- PASS		Give the user password
+- PASV		Server enters passive mode
+- PORT		Specify Data port to open
+- QUIT		Quit the server
+- REIN		Reinitialize the user
+- RETR		Retreive file from server
+- RMD		Remove directory from server
+- STOR		Store data
+- STOU		Store data in an unique file
+- TYPE		Data representation type
+- USER		Identify the user
+- PWD		Current working directory path
+- REGT		Register a new account
 ```
 
-Those commands operate on the client local system:
+Those commands are recognised by the client:
 ```
-- lls
-- lcd
-- lpwd
-- ...
-- mget [dir]  : like GET but "multiple" and for directories
-- mput [dir]  : like PUT but "multiple" and for directories
+?			Help of local commands
+\\			Start a local command
+cd			Change working directory
+connect		Connect to a server
+clear		Clear Server chat screen
+exit		Quit the client
+get			Get file from server
+help		Help of server commands
+ls			List files or directory
+mkdir		Create directory
+nlst		List files or directory
+pass		Sends password to server
+put			Put file to server
+pwd			Print working directory
+quit		Quit the server
+refresh		Refresh list Windows
+rm			Remove file from server
+rmdir		Remove directory from server
 ```
+All commands, except '?' and '\\', are translated by the client to
+communicate with the server.
 
 ## EXTRA
 - RFC 959 compliant
 - IPv6 supported
 - login/password management
+- userspace management
 
 ## AUTHOR
 - gbourgeo
