@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/11 23:18:47 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/05 22:23:14 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/12 13:48:47 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void		print_info(t_client *cl, t_server *sv)
 	int			i;
 
 	i = 0;
-	if (!FT_CHECK(sv->options, sv_interactive))
+	if (!GET_BIT(sv->options, sv_interactive))
 		return ;
 	while (i < (int)(sizeof(cl->errnb) / sizeof(cl->errnb[0])))
 	{

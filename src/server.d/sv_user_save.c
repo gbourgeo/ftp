@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/20 01:08:11 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/01/06 18:11:42 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/12 13:47:20 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 static void		print_info(const char *s1, const char *s2, t_client *cl,
 t_server *sv)
 {
-	if (!FT_CHECK(sv->options, sv_interactive))
+	if (!GET_BIT(sv->options, sv_interactive))
 		return ;
 	printf("Client "FTP_YELLOW"%d"FTP_RESET": %s `%s`\n", cl->fd, s1, s2);
 }

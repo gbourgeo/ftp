@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/12 14:48:27 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/01/06 18:12:25 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/12 13:45:25 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,17 @@ int				main(int ac, char **av, char **environ)
 					if ((errnb[0] = sv_get_addrinfo(sv)) == IS_OK)
 						errnb[1] = sv_server_loop(sv);
 	if (errnb[0] != IS_OK)
-		if (ft_error(errnb[0], &sv->info) == 2)
+	{
+		ft_print_error(errnb[0], &sv->info);
+		if (errnb[0] == ERR_HELP)
 			print_usage(sv->info.progname, sv->info.progpath);
-	if (FT_CHECK(sv->options, sv_interactive) && errnb[1] != IS_OK)
-		if (ft_error(errnb[1], &sv->info) == 2)
+	}
+	if (GET_BIT(sv->options, sv_interactive) && errnb[1] != IS_OK)
+	{
+		ft_print_error(errnb[1], &sv->info);
+		if (errnb[1] == ERR_HELP)
 			print_usage(sv->info.progname, sv->info.progpath);
+	}
 	sv_server_end(sv, 1);
 	return (errnb[0] + errnb[1]);
 }

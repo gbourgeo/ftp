@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 21:44:45 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/12 17:41:20 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/13 23:09:43 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ int			cl_get_userinfo(t_server *sv, t_client *cl)
 {
 	int				ret;
 
-	wmove(cl->ncu.chatwin, 0, 0);
-	wprintw(cl->ncu.chatwin, "Do you want to sign to the server ? (y/n) ");
+	wprintw(cl->ncu.chatwin, "Do you need to sign to the server ? (y/n) ");
 	wrefresh(cl->ncu.chatwin);
 	while ((ret = wgetch(cl->ncu.chatwin)) != ERR)
 		if (ft_isprint(ret) || ret == 10)

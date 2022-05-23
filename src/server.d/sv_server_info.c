@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 23:11:42 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/01/25 18:09:16 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2021/12/26 12:54:25 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ void		sv_server_info(t_server *sv)
 	printf(FTP_UNDERLINED"Home"FTP_RESET":\t\t\""FTP_BOLD);
 	printf(FTP_PINK"%s"FTP_RESET"\"\n", sv->info.env.home);
 	sv_print_path(sv->info.env.path);
-	printf(FTP_UNDERLINED"Buff Size"FTP_RESET":\t"FTP_RESET"%d\n",
+	printf(FTP_UNDERLINED"Command Size"FTP_RESET":\t"FTP_RESET"%d\n",
 	CMD_BUFF_SIZE);
-	printf(FTP_UNDERLINED"Data Size"FTP_RESET":\t"FTP_RESET"%d\n",
+	printf(FTP_UNDERLINED"Transfert Size"FTP_RESET":\t"FTP_RESET"%d\n",
 	DATA_BUFF_SIZE);
 	printf(FTP_UNDERLINED"Max Clients"FTP_RESET":\t"FTP_RESET"%d\n",
 	CLIENTS_MAX);

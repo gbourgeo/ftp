@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cl_ringbuffcat.c                                   :+:      :+:    :+:   */
+/*   ft_bit_operation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/04 19:41:31 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/08 18:21:38 by gbourgeo         ###   ########.fr       */
+/*   Created: 2019/12/20 18:52:39 by gbourgeo          #+#    #+#             */
+/*   Updated: 2022/03/13 16:46:29 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cl_main.h"
+#include "common.h"
 
-char			*cl_ringbuffcat(char *buff, int size, t_buff *ring)
+/*
+** Retourne la valeur du bit à la position pos du nombre num
+*/
+int			ft_get_bit(int num, int pos)
 {
-	int			i;
-	char		*ptr;
+	return (num & (1 << pos));
+}
 
-	i = ft_strlen(buff);
-	ptr = ring->head;
-	while (ptr != ring->tail && i < size)
-	{
-		buff[i++] = *ptr++;
-		if (ptr > ring->buff + sizeof(ring->buff))
-			ptr = ring->buff;
-	}
-	buff[i] = '\0';
-	return (buff);
+/*
+** Affecte le bit au nombre num à la position pos.
+** Si value vaut 0 le bit est retiré, s'il vaut 1 le bit est mis.
+*/
+int			ft_set_bit(int num, int pos, char value)
+{
+	if (value == 0)
+		return (num ^ (1 << value));
+	return (num | (1 << pos));
 }

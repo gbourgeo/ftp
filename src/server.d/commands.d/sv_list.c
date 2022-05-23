@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/27 02:57:08 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/24 14:09:39 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/02/06 17:43:42 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ int					sv_list(char **cmds, t_client *cl)
 {
 	int		errnb;
 
-	if (FT_CHECK(g_serv.options, sv_user_mode) && !cl->login.logged)
+	if (GET_BIT(g_serv.options, sv_user_mode) && !cl->login.logged)
 		return (sv_response(cl, "530 Please login with USER and PASS."));
 	if (!sv_check_err(cl->errnb, sizeof(cl->errnb) / sizeof(cl->errnb[0])))
 		return (sv_response(cl, "421 Closing connection"));
 	if (cmds[1] && (!sv_validpathname(cmds[1]) || cmds[2]))
 		return (sv_response(cl, "501 %s", ft_get_error(ERR_INVALID_PARAM)));
-	if (!cl->data.port && cl->data.pasv_fd < 0 && cl->data.socket < 0)
+	if (!cl->data.port && cl->data.pasv_fd < 0 && cl->data.sock_fd < 0)
 		return (sv_response(cl, "425 Use PORT or PASV first"));
 	cl->data.function = sv_nlst_exec;
 	if ((errnb = sv_new_pid(cmds, cl, "-la")) != IS_OK)

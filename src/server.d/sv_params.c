@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/20 18:02:17 by gbourgeo          #+#    #+#             */
-/*   Updated: 2019/12/26 18:41:00 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2021/12/26 12:52:15 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 t_opt			*sv_params(int getsize)
 {
 	static t_opt	opts[] = {
-		{ '4', NULL, NULL, "Allows IpV4 only.", sv_param_four },
-		{ '6', NULL, NULL, "Allows IpV6 only.", sv_param_six },
-		{ 'd', NULL, NULL, "Users directory created (with -u).", sv_param_d },
+		{ '4', NULL, NULL, "Allows IpV4 connections only.", sv_param_four },
+		{ '6', NULL, NULL, "Allows IpV6 connections only.", sv_param_six },
+		{ 'i', NULL, NULL, "Interactive server (default: off).", sv_param_i },
+		{ 'p', "-path", "[path]", "Server working directory (default: '.').", sv_param_p },
+		{ 'u', "-user", NULL, "Registered users mode (default: off).", sv_param_u },
+		{ 'd', "-dir", NULL, "Users directory created (with -u).", sv_param_d },
 		{ 'h', "-help", NULL, "Print help and exit.", sv_param_h },
-		{ 'i', NULL, NULL, "Interactive server.", sv_param_i },
-		{ 'p', "-path", "[path]", "Working path.", sv_param_p },
-		{ 'u', "-user", NULL, "Registered users mode.", sv_param_u },
 	};
 
 	if (getsize)

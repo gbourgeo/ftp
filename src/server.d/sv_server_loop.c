@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/13 08:45:52 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/10 18:53:57 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/12 13:47:43 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,19 @@ static void		sv_check_clients(t_client *cl, t_server *sv)
 	}
 }
 
+static int		sv_check_and_set_fd(t_data *data, int max, fd_set *fdr)
+{
+	if (data->pasv_fd > 0)
+		FD_SET(data->pasv_fd, fdr);
+	if (data->pasv_fd > max)
+		max = data->pasv_fd;
+	// if (data->sock_fd > 0)
+	// 	FD_SET(data->sock_fd, fdr);
+	// if (data->sock_fd > max)
+	// 	max = data->sock_fd;
+	return (max);
+}
+
 static int		sv_init_fd(fd_set *fdr, fd_set *fdw, t_server *sv)
 {
 	t_client	*cl;
@@ -52,13 +65,11 @@ static int		sv_init_fd(fd_set *fdr, fd_set *fdw, t_server *sv)
 	while (cl)
 	{
 		FD_SET(cl->fd, fdr);
-		FD_SET(cl->fd, fdw);
+		if (cl->wr.len > 0)
+			FD_SET(cl->fd, fdw);
 		if (cl->fd > max)
 			max = cl->fd;
-		if (cl->data.pasv_fd > 0)
-			FD_SET(cl->data.pasv_fd, fdr);
-		if (cl->data.pasv_fd > max)
-			max = cl->data.pasv_fd;
+		max = sv_check_and_set_fd(&cl->data, max, fdr);
 		cl = cl->next;
 	}
 	return (max);
@@ -75,7 +86,7 @@ static void		sv_check_fd(int ret, fd_set *fdr, fd_set *fdw, t_server *sv)
 	if (sv->ip[sv_v6] > 0 && FD_ISSET(sv->ip[sv_v6], fdr) && ret-- > 0)
 		if ((sv->errnb[1] = sv_server_accept(sv_v6, sv)) != IS_OK)
 			sv_server_close(sv_v6, 1, sv);
-	while (cl && ret)
+	while (cl && ret > 0)
 	{
 		if (FD_ISSET(cl->fd, fdr) && ret-- > 0)
 			cl->errnb[0] = cl->fct_read(cl);
@@ -96,12 +107,12 @@ int				sv_server_loop(t_server *sv)
 	fd_set			fd_write;
 	struct timeval	timeout;
 
-	if (FT_CHECK(sv->options, sv_interactive))
+	if (GET_BIT(sv->options, sv_interactive))
 		sv_server_info(sv);
-	timeout.tv_sec = 0;
-	timeout.tv_usec = 0;
 	while (sv->ip[sv_v4] > 0 || sv->ip[sv_v6] > 0)
 	{
+		timeout.tv_sec = 1;
+		timeout.tv_usec = 0;
 		sv_check_clients(sv->clients, sv);
 		max = sv_init_fd(&fd_read, &fd_write, sv);
 		ret = select(max + 1, &fd_read, &fd_write, NULL, &timeout);

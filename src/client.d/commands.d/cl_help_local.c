@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 20:40:00 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/18 13:33:47 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/19 14:35:20 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,13 @@ static char			*padding(int pos, t_command *cmds)
 	return (space);
 }
 
-int					cl_help_local(char *buf, char **cmd, t_client *cl)
+int					cl_help_local(char **cmd, t_server *sv, t_client *cl)
 {
 	t_command		*cmds;
 	long			i;
 	int				errnb;
 
-	(void)buf;
+	(void)sv;
 	cmds = cl_commands(0);
 	if (cmd[1])
 		return (cl_help_command(cmd, cl));
@@ -86,13 +86,8 @@ int					cl_help_local(char *buf, char **cmd, t_client *cl)
 		cmds[i].name, padding(i, cmds));
 		i++;
 	}
-	if (errnb == OK
-	&& (errnb = wprintw(cl->ncu.chatwin, "\n")) == OK
-	&& (errnb = wattron(cl->ncu.chatwin, COLOR_PAIR(CL_GREEN))) == OK
-	&& (errnb = wprintw(cl->ncu.chatwin, "SUCCESS")) == OK
-	&& (errnb = wattroff(cl->ncu.chatwin, COLOR_PAIR(CL_GREEN))) == OK
-	&& (errnb = wprintw(cl->ncu.chatwin, " Command OK\n")) == OK)
-		wrefresh(cl->ncu.chatwin);
+	wprintw(cl->ncu.chatwin, "\n");
+	wrefresh(cl->ncu.chatwin);
 	return ((errnb == OK) ? IS_OK : ERR_WRITE);
 }
 

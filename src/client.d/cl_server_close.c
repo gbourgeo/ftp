@@ -6,29 +6,37 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 18:04:41 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/17 17:11:26 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/22 18:04:48 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cl_main.h"
 
-void				cl_server_close(t_server *sv, t_client *cl)
+t_server *			cl_server_close(t_server *sv, t_server *sv_list)
 {
-	ft_strdel(&sv->user);
-	ft_strdel(&sv->pass);
+	t_server	*ret;
+
+	ft_strdel(&sv->address);
+	ft_strdel(&sv->port);
+	ft_strdel(&sv->username);
+	ft_strdel(&sv->password);
 	ft_close(&sv->fd_ctrl);
 	cl_server_close_data(sv);
-	cl->precmd = cl_precmd_end(cl->precmd, 1, cl);
+	while (sv->cmd_list)
+		sv->cmd_list = cl_command_remove_list(sv->cmd_list, sv->cmd_list);
+	if (sv->list.prev != NULL)
+		sv->list.prev->next = sv->list.next;
+	if (sv->list.next != NULL)
+		sv->list.next->prev = sv->list.prev;
+	ret = (sv->list.prev == NULL) ? (void *)sv->list.next : sv_list;
+	free(sv);
+	return (ret);
 }
 
 void				cl_server_close_data(t_server *sv)
 {
 	ft_close(&sv->fd_data);
-	sv->receive_data = -1;
-	sv->wait_response = 0;
 	ft_strdel(&sv->filename);
 	ft_close(&sv->filefd);
 	sv->ret = 0;
-	ft_bzero(sv->cmd, sizeof(sv->cmd));
-//	ft_bzero(sv->response, sizeof(sv->response));
 }

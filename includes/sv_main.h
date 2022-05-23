@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/12 14:49:14 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/17 13:18:42 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/02/06 17:42:36 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,12 @@
 ** Maximum DATA size to transfert.
 ** Timeout for connection or transfert.
 */
-
 # define TRANSFERT_MAX		2000000000
 # define TRANSFERT_TIMEOUT	5
 
 /*
 ** Enumeration for USERS registered
 */
-
 enum
 {
 	us_server = (1 << 0),
@@ -44,7 +42,6 @@ enum
 /*
 ** Enumeration for SERVER options
 */
-
 enum
 {
 	sv_v4 = 0,
@@ -57,7 +54,6 @@ enum
 /*
 ** Enumeration for DATA type
 */
-
 enum
 {
 	data_type_ascii = 0,
@@ -72,7 +68,6 @@ enum
 /*
 ** Users structure
 */
-
 typedef struct		s_user
 {
 	int				type;
@@ -86,7 +81,6 @@ typedef struct		s_user
 /*
 ** Login structure
 */
-
 typedef struct		s_login
 {
 	char			*user;
@@ -97,7 +91,6 @@ typedef struct		s_login
 /*
 ** Data transfert structure
 */
-
 typedef struct		s_data
 {
 	int				type;
@@ -105,7 +98,7 @@ typedef struct		s_data
 	char			address[INET6_ADDRSTRLEN];
 	char			*port;
 	int				pasv_fd;
-	int				socket;
+	int				sock_fd;
 	int				(*function)();
 	pid_t			pid;
 	char			*file;
@@ -122,7 +115,6 @@ typedef struct		s_data
 ** [2]: transfert errors
 ** [3]: client asked to quit
 */
-
 typedef struct		s_client
 {
 	int				version;
@@ -142,12 +134,11 @@ typedef struct		s_client
 	struct s_client	*next;
 }					t_client;
 
-/*
-** Server structure (global)
-*/
-
 typedef void		(*t_sighandler)(int);
 
+/*
+** Server structure
+*/
 typedef struct		s_server
 {
 	t_common		info;
@@ -162,12 +153,17 @@ typedef struct		s_server
 	int				connected;
 }					t_server;
 
+/*
+** Global (server structure)
+*/
 struct s_server		g_serv;
 
 /*
 ** Server Options structure
+** {
+** * key, key_longname, parameter, description, function_associated
+** }
 */
-
 typedef struct		s_opt
 {
 	char			c;
@@ -180,7 +176,6 @@ typedef struct		s_opt
 /*
 ** Binary parameters structure
 */
-
 typedef struct		s_param
 {
 	t_opt			*opts;

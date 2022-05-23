@@ -6,16 +6,16 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:22:08 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/17 02:30:10 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/12 00:52:27 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cl_main.h"
 
-int					cl_clear(char *buf, char **cmd, t_client *cl)
+int					cl_clear(char **cmd, t_server *sv, t_client *cl)
 {
-	(void)buf;
 	(void)cmd;
+	(void)sv;
 	wclear(cl->ncu.chatwin);
 	wrefresh(cl->ncu.chatwin);
 	return (IS_OK);

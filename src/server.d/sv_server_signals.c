@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 02:07:00 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/01/28 21:30:45 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/12 13:48:30 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void		sv_signals_hdlr(int sig)
 	t_server	*serv;
 
 	serv = &g_serv;
-	print_signal_info(sig, FT_CHECK(serv->options, sv_interactive));
+	print_signal_info(sig, GET_BIT(serv->options, sv_interactive));
 	if (serv->sig[sig] == SIG_ERR)
 		return ;
 	sv_server_end(serv, 1);

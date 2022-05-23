@@ -27,7 +27,7 @@ int				sv_dele(char **cmds, t_client *cl)
 
 	path = NULL;
 	errnb = IS_OK;
-	if (FT_CHECK(g_serv.options, sv_user_mode) && !cl->login.logged)
+	if (GET_BIT(g_serv.options, sv_user_mode) && !cl->login.logged)
 		return (sv_response(cl, "530 Please login with USER and PASS."));
 	if (!sv_check_err(cl->errnb, sizeof(cl->errnb) / sizeof(cl->errnb[0])))
 		return (sv_response(cl, "421 Closing connection"));

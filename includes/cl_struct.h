@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 16:07:30 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/11 23:02:53 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/13 14:01:59 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ t_opt				*cl_params(int getsize);
 typedef struct		s_client_parameters
 {
 	t_opt			*opts;
+	char			*address;
+	char			*port;
 	size_t			size;
 	int				i;
 }					t_param;

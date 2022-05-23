@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 21:11:34 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/17 11:23:00 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2021/12/26 12:44:22 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int				sv_param_p(const char **arg, int *i, t_server *sv)
 	else if (access(arg[*i], W_OK) < 0)
 		err = "path is not writable.";
 	else if (stat(arg[*i], &buf) < 0 || !S_ISDIR(buf.st_mode))
-		err = "path not a directory.";
+		err = "path is not a directory.";
 	if (err == NULL)
 		return (param_p_new_home(arg[*i], sv));
 	dprintf(STDERR_FILENO, "%s: %s: %s\n", sv->info.progname, arg[*i], err);

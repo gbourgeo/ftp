@@ -22,7 +22,7 @@ int			sv_welcome(t_client *cl, t_server *sv)
 
 	time(&rawtime);
 	timeinfo = localtime(&rawtime);
-	svinfo = (FT_CHECK(sv->options, sv_user_mode)) ?
+	svinfo = (GET_BIT(sv->options, sv_user_mode)) ?
 	"This is a private system - No guest login" :
 	"This is a public system - Guest login granted";
 	if ((errnb = sv_response(cl, "220-Welcome to GBO FTP Server.")) == IS_OK

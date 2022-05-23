@@ -6,7 +6,7 @@
 #    By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/05/12 14:11:41 by gbourgeo          #+#    #+#              #
-#    Updated: 2022/04/11 23:58:50 by gbourgeo         ###   ########.fr        #
+#    Updated: 2022/04/17 16:24:07 by gbourgeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,6 @@ CLI_C	= cl_main.c						\
 		cl_command_exec.c				\
 		cl_command_func.c				\
 		cl_response.c					\
-		cl_ringbuffcat.c				\
 		cl_server_new.c					\
 		cl_server_close.c				\
 		cl_server_recv_data.c			\
@@ -68,6 +67,7 @@ CLI_C += cl_bslash_cd.c					\
 		cl_refresh.c					\
 		cl_rm.c							\
 		cl_rmdir.c						\
+		cl_user.c						\
 
 SERVEUR	= server
 SER_D	= src/server.d/

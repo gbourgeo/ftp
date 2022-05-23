@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 17:28:43 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/20 20:51:41 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/01/30 20:07:21 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int			create_c_list(t_client *cl)
 	y = (LINES * 1 / 10);
 	if ((y = (LINES - ((y < 3) ? 3 : y)) / 2) < 3)
 		y = 3;
-	if (!(cl->ncu.clistbox = subwin(cl->ncu.main, y + 1, x, y, COLS - x)))
+	if (!(cl->ncu.clistbox = subwin(cl->ncu.main, y, x, y, COLS - x)))
 		return (ERR_NCURSE_LISTBOX);
 	box(cl->ncu.clistbox, 0, 0);
 	mvwaddch(cl->ncu.clistbox, 0, (x * 0.5) - 8, ACS_RTEE);

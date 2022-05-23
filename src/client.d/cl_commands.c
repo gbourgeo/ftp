@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/30 14:14:16 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/17 17:23:48 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/17 16:29:12 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_command				*cl_commands(int getsize)
 		{ "refresh", "Refresh list Windows", cl_refresh_help, cl_refresh, 0 },
 		{ "rm", "Remove file from server", cl_rm_help, cl_rm, 0 },
 		{ "rmdir", "Remove directory from server", cl_rmdir_help, cl_rmdir, 0 },
+		{ "user", "Send username to the server", cl_user_help, cl_user, 0 },
 	};
 
 	if (getsize)

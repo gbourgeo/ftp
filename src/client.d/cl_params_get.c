@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/05 22:36:17 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/11 16:41:13 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/05/01 16:08:09 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,26 @@ static int		only_digit(const char *s)
 	return (1);
 }
 
-static int		get_value(char **av, t_param *p, t_client *cl)
+static int		get_value(char **av, t_param *p, int *i, t_client *cl)
 {
 	size_t		j;
 	size_t		k;
 	int			errnb;
 
 	j = 0;
-	while (av[p->i][++j])
+	while (av[*i][++j])
 	{
 		k = -1;
 		while (++k < p->size)
-			if (av[p->i][j] == p->opts[k].c
+			if (av[*i][j] == p->opts[k].c
 			|| (p->opts[k].str
-				&& ft_strequ(&av[p->i][j], p->opts[k].str)))
+				&& ft_strequ(&av[*i][j], p->opts[k].str)))
 			{
-				if ((errnb = p->opts[k].function(av, &p->i, cl)) != IS_OK)
+				if ((errnb = p->opts[k].function(av, i, cl)) != IS_OK)
 					return (errnb);
 				if (p->opts[k].param
 				|| (p->opts[k].str
-					&& ft_strequ(&av[p->i][j], p->opts[k].str)))
+					&& ft_strequ(&av[*i][j], p->opts[k].str)))
 					return (IS_OK);
 				break ;
 			}
@@ -50,41 +50,49 @@ static int		get_value(char **av, t_param *p, t_client *cl)
 	return (IS_OK);
 }
 
-static void		init_param(t_param *p, t_client *cl)
+static void		init_param(t_param *p)
 {
 	p->opts = cl_params(0);
 	p->size = (size_t)cl_params(1);
-	p->i = 1;
-	cl->options = 0;
-	cl->port = NULL;
-	cl->addr = NULL;
+	p->address = NULL;
+	p->port = NULL;
+}
+
+static int		check_params(t_param *p, t_client *cl)
+{
+	if (p->address == NULL || p->port == NULL)
+		return (ERR_NB_PARAMS);
+	if (!only_digit(p->port))
+		return (ERR_DIGIT_PARAM);
+	cl->cmd_list = cl_command_new((char *[]){
+		"connect", p->address, p->port, NULL },
+		cl->ncu.chatwin,
+		" ");
+	return (IS_OK);
 }
 
 int				cl_params_get(char **av, t_client *cl)
 {
 	t_param		p;
+	int			i;
 	int			errnb;
 
-	init_param(&p, cl);
+	init_param(&p);
+	i = 1;
 	errnb = IS_OK;
-	while (av[p.i])
+	while (av[i] && errnb == IS_OK)
 	{
-		if (av[p.i][0] == '-')
-		{
-			if ((errnb = get_value(av, &p, cl)) != IS_OK)
-				return (errnb);
-		}
-		else if (cl->addr == NULL)
-			cl->addr = av[p.i];
-		else if (cl->port == NULL)
-		{
-			if (!only_digit(av[p.i]))
-				return (ERR_DIGIT_PARAM);
-			cl->port = av[p.i];
-		}
+		if (av[i][0] == '-')
+			errnb = get_value(av, &p, &i, cl);
+		else if (p.address == NULL)
+			p.address = av[i];
+		else if (p.port == NULL)
+			p.port = av[i];
 		else
-			return (ERR_TOOMUCH_PARAM);
-		p.i++;
+			errnb = ERR_TOOMUCH_PARAM;
+		i++;
 	}
-	return ((!cl->port || !cl->addr) ? ERR_NB_PARAMS : IS_OK);
+	if (errnb != IS_OK)
+		return (errnb);
+	return (check_params(&p, cl));
 }

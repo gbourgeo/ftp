@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/12 18:37:59 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/20 17:01:23 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/19 12:55:20 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,18 @@ int					main(int ac, char **av, char **environ)
 	cl = &g_cl;
 	errno = 0;
 	if ((errnb = ft_init(cl, sizeof(*cl), environ, av[0])) == IS_OK)
-		if ((errnb = cl_init(environ, &cl->info.env)) == IS_OK)
-			if ((errnb = cl_params_get(av, cl)) == IS_OK)
-				if ((errnb = cl_client_signals(cl)) == IS_OK)
+		if ((errnb = cl_init(environ, cl)) == IS_OK)
+			if ((errnb = cl_client_signals(cl)) == IS_OK)
+				if ((errnb = cl_params_get(av, cl)) == IS_OK)
 					if ((errnb = cl_history_init(cl)) == IS_OK)
 						if ((errnb = cl_ncurses_init(cl)) == IS_OK)
 							errnb = cl_client_loop(cl);
 	cl_client_end(cl);
 	if (errnb != IS_OK)
-		if (ft_error(errnb, &cl->info) == 2)
+	{
+		ft_print_error(errnb, &cl->info);
+		if (errnb == ERR_HELP)
 			print_usage(cl->info.progname, cl->info.progpath);
+	}
 	return (errnb);
 }

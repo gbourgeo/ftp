@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 05:44:50 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/10 19:03:37 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/12 13:48:04 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int		accept_client(int version, int fd, t_server *sv)
 	if ((cl->next = sv->clients))
 		cl->next->prev = cl;
 	sv->clients = cl;
-	if (FT_CHECK(sv->options, sv_interactive))
+	if (GET_BIT(sv->options, sv_interactive))
 		printf("Client "FTP_GREEN"%d"FTP_RESET": %d connected to %s.\n",
 		cl->fd, version, cl->home);
 	sv_welcome(cl, sv);

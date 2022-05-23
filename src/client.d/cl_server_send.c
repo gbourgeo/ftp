@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 18:51:48 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/10 18:38:10 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/14 16:40:23 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,19 @@ static int	cl_send_error(int errnb)
 	if (errnb == 0 || errno == ECONNRESET || errno == EPIPE)
 		return (ERR_DISCONNECT);
 	if (errno == EAGAIN || errno == EWOULDBLOCK)
-		return (IS_OK);
+		return (NOT_DEFINED);
 	return (ERR_SEND);
 }
 
 /*
 ** Function to send commands to the Server.
 */
-
-int			cl_server_send(t_buff *ring, int fd, t_client *cl)
+int			cl_server_send(t_buff *ring, int fd)
 {
 	int		ret;
 
-	(void)cl;
 	if (ring->len == 0)
-		return (IS_OK);
+		return (NOT_DEFINED);
 	if (ring->head < ring->tail)
 		ret = send(fd, ring->head, ring->tail - ring->head,
 		MSG_DONTWAIT | MSG_NOSIGNAL);
@@ -47,5 +45,5 @@ int			cl_server_send(t_buff *ring, int fd, t_client *cl)
 	if ((ring->head += ret) >= ring->buff + sizeof(ring->buff))
 		ring->head = ring->buff;
 	ring->len -= ret;
-	return (IS_OK);
+	return (NOT_DEFINED);
 }

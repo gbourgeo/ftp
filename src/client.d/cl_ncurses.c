@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 17:11:36 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/24 14:16:04 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/12 00:28:47 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void		cl_resize_window(int sig)
 	if ((errnb = cl_ncurses_init(cl)) == IS_OK)
 		return ;
 	cl_client_end(cl);
-	ft_error(errnb, &cl->info);
+	ft_print_error(errnb, &cl->info);
 	exit(EXIT_FAILURE);
 }
 
@@ -40,13 +40,15 @@ static void		cl_init_pairs(void)
 	init_pair(CL_RED, COLOR_RED, -1);
 	init_pair(CL_GREEN, COLOR_GREEN, -1);
 	init_pair(CL_BLUE, COLOR_BLUE, -1);
+	init_pair(CL_BACK_RED, COLOR_YELLOW, COLOR_MAGENTA);
+	init_pair(CL_BACK_GREEN, COLOR_YELLOW, COLOR_GREEN);
 }
 
 int				cl_ncurses_init(t_client *cl)
 {
 	int			errnb;
 
-	if (FT_CHECK(cl->options, cl_verbose))
+	if (GET_BIT(cl->options, cl_verbose))
 		ft_putstr("Initialising terminal... ");
 	cl->sig[SIGWINCH] = signal(SIGWINCH, cl_resize_window);
 	if ((cl->ncu.main = initscr()) == NULL)

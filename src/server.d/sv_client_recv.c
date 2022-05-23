@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/26 23:20:31 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/10 18:38:04 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/01/30 20:30:07 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static int		sv_client_precommands(t_client *cl)
 	int			errnb;
 
 	ft_ringbuffcpy(buff, sizeof(buff), &cl->rd);
+	printf("Client "FTP_GREEN"%d"FTP_RESET": Command: %s\n", cl->fd, buff);
 	if (!(cmd = ft_split_whitespaces(buff)))
 		return (sv_response(cl, "500 Internal error (memory alloc. failed)"));
 	if (!cmd[0] || !cmd[0][0])

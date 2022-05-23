@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 17:13:53 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/01/29 19:50:29 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/12 13:48:25 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 static void		print_info(int version, t_server *sv)
 {
-	if (!FT_CHECK(sv->options, sv_interactive))
+	if (!GET_BIT(sv->options, sv_interactive))
 		return ;
 	printf("Closing IPv"FTP_GREEN"%s"FTP_RESET"...\n",
 	(version == sv_v4) ? "4" : "6");

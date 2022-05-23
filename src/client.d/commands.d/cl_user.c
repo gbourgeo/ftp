@@ -1,35 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cl_help.c                                          :+:      :+:    :+:   */
+/*   cl_user.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/30 18:17:53 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/17 17:23:21 by gbourgeo         ###   ########.fr       */
+/*   Created: 2022/04/17 15:29:57 by gbourgeo          #+#    #+#             */
+/*   Updated: 2022/05/23 16:52:12 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cl_main.h"
 
-int			cl_help(char **cmd, t_server *sv, t_client *cl)
+int					cl_user(char **cmd, t_server *sv, t_client *cl)
 {
 	t_cmd_l	*new_cmd;
 
 	if (sv == NULL)
 		return (ERR_NO_SERVER);
 	free(cmd[0]);
-	cmd[0] = ft_strdup("HELP");
-	new_cmd = cl_command_new(cmd, cl->ncu.chatwin, " 2");
+	cmd[0] = ft_strdup("USER");
+	new_cmd = cl_command_new(cmd, cl->ncu.chatwin, " 3");
 	sv->cmd_list = list_insert_tail(new_cmd, sv->cmd_list);
 	return (NOT_DEFINED);
 }
 
-int			cl_help_help(t_command *cmd, t_client *cl)
+int					cl_user_help(t_command *cmd, t_client *cl)
 {
 	static char		*help[] = {
-		"This command print the server help.", NULL
+		"This command sends to the server the user needed to log in",
+		"if the server needs it.", NULL
 	};
 
-	return (cl_help_print(cmd, "[<command_name>]", help, cl));
+	return (cl_help_print(cmd, "<username>", help, cl));
 }

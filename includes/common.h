@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/20 06:46:11 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/17 11:24:25 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/13 18:08:17 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@
 # define FTP_LIGHT_BLUE	"\x1B[36m"
 # define FTP_GREY		"\x1B[37m"
 
-# define FT_CHECK			ft_check_option
+# define GET_BIT		ft_get_bit
+# define SET_BIT		ft_set_bit
 
 /*
 ** FTP_BUFF_SIZE :
@@ -50,7 +51,6 @@
 ** Low value and long command will probably lead to an obsolete interaction
 ** with the server.
 */
-
 # define CMD_BUFF_SIZE		128
 
 /*
@@ -59,11 +59,11 @@
 ** High value may result on a higher transfert speed but
 ** may lead on undefined behaviours depending on the system.
 */
-
 # define DATA_BUFF_SIZE		65536
 
 enum
 {
+	NOT_DEFINED = -1,
 	IS_OK = 0,
 	ERR_HELP,
 	ERR_NB_PARAMS,
@@ -143,7 +143,6 @@ typedef struct		s_common
 /*
 ** Ring-Buffer structure
 */
-
 typedef struct		s_buff
 {
 	char			*head;
@@ -155,7 +154,6 @@ typedef struct		s_buff
 /*
 ** Commands structure
 */
-
 typedef struct		s_command
 {
 	const char		*name;
@@ -167,11 +165,14 @@ typedef struct		s_command
 
 const char			*get_signal_name(int sig);
 void				print_signal_info(int sig, int interactive);
-int					ft_check_option(int option, int value);
+int					ft_get_bit(int option, int pos);
+int					ft_set_bit(int option, int pos, char value);
+
+// int					ft_check_option(int option, int value);
 
 int					ft_check_path(char **path, char *pwd, char *home);
 void				ft_close(int *fd);
-int					ft_error(int errnb, t_common *info);
+void				ft_print_error(int errnb, t_common *info);
 char				*ft_get_command(char *cmd, char *paths, int n);
 const char			*ft_get_error(int errnb);
 char				*ft_getenv(char *search, char **envp);

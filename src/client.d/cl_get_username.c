@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:08:03 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/12 17:42:16 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/03/19 17:18:35 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static int	cl_get_quit(char buff[], int ret, t_server *sv, t_client *cl)
 {
 	(void)buff;
 	(void)ret;
-	ft_strdel(&sv->user);
-	ft_strdel(&sv->pass);
+	ft_strdel(&sv->username);
+	ft_strdel(&sv->password);
 	wprintw(cl->ncu.chatwin, "\n");
 	wrefresh(cl->ncu.chatwin);
 	return (1);
@@ -27,7 +27,9 @@ static int	cl_get_quit(char buff[], int ret, t_server *sv, t_client *cl)
 static int	cl_get_next(char buff[], int ret, t_server *sv, t_client *cl)
 {
 	(void)ret;
-	sv->user = ft_strdup(buff);
+	sv->username = ft_strdup(buff);
+	wprintw(cl->ncu.chatwin, "\n");
+	wrefresh(cl->ncu.chatwin);
 	return (cl_get_userpass(sv, cl));
 }
 
@@ -75,8 +77,7 @@ int			cl_get_username(t_server *sv, t_client *cl)
 
 	ft_bzero(buff, sizeof(buff));
 	ret = 0;
-	wmove(cl->ncu.chatwin, 1, 0);
-	wprintw(cl->ncu.chatwin, "Enter your USER name : ");
+	wprintw(cl->ncu.chatwin, "Enter your username : ");
 	wrefresh(cl->ncu.chatwin);
 	while (ret == 0 && (ret = wgetch(cl->ncu.chatwin)) != ERR)
 	{

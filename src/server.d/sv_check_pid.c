@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/22 02:21:51 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/21 15:28:35 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/12 13:45:45 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int				sv_check_pid(t_client *cl, t_server *sv)
 			errnb = check_pid_value("250 Tranfert OK", status, cl);
 		else
 			errnb = check_pid_value("200 Command OK", status, cl);
-		if (FT_CHECK(sv->options, sv_interactive))
+		if (GET_BIT(sv->options, sv_interactive))
 			printf("Client "FTP_YELLOW"%d"FTP_RESET": DATA transfert ended "
 			"(status: %d).\n", cl->fd, status);
 	}

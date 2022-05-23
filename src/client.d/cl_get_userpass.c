@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 23:26:59 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/12 17:42:10 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/12 00:25:05 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static int	cl_get_quit(char buff[], int ret, t_server *sv, t_client *cl)
 {
 	(void)buff;
 	(void)ret;
-	ft_strdel(&sv->user);
-	ft_strdel(&sv->pass);
+	ft_strdel(&sv->username);
+	ft_strdel(&sv->password);
 	wprintw(cl->ncu.chatwin, "\n");
 	wrefresh(cl->ncu.chatwin);
 	return (1);
@@ -26,10 +26,16 @@ static int	cl_get_quit(char buff[], int ret, t_server *sv, t_client *cl)
 
 static int	cl_get_next(char buff[], int ret, t_server *sv, t_client *cl)
 {
+	t_cmd_l	*cmd;
+
 	(void)ret;
-	sv->pass = ft_strdup(buff);
+	sv->password = ft_strdup(buff);
 	wprintw(cl->ncu.chatwin, "\n");
 	wrefresh(cl->ncu.chatwin);
+	cmd = cl_command_new((char *[]){ "USER", sv->username, NULL }, cl->ncu.chatwin, "2 3");
+	cl->cmd_list = list_insert_tail(cmd, cl->cmd_list);
+	cmd = cl_command_new((char *[]){ "PASS", sv->password, NULL }, cl->ncu.chatwin, " 2");
+	cl->cmd_list = list_insert_tail(cmd, cl->cmd_list);
 	return (1);
 }
 
@@ -70,8 +76,7 @@ int			cl_get_userpass(t_server *sv, t_client *cl)
 
 	ft_bzero(buff, sizeof(buff));
 	ret = 0;
-	wmove(cl->ncu.chatwin, 2, 0);
-	wprintw(cl->ncu.chatwin, "Enter your PASS word : ");
+	wprintw(cl->ncu.chatwin, "Enter your password : ");
 	wrefresh(cl->ncu.chatwin);
 	while (ret == 0 && (ret = wgetch(cl->ncu.chatwin)) != ERR)
 	{

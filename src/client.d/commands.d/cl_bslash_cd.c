@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 16:37:17 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/21 17:53:22 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/13 18:30:59 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ static int		cd_get_pwd(char *pwd, char *cmd, t_env *env)
 
 int				cl_bslash_cd(char **cmd, t_client *cl)
 {
+	t_cmd_l	*new_cmd;
 	char	pwd[MAXPATHLEN + 1];
 	int		errnb;
 
@@ -90,12 +91,9 @@ int				cl_bslash_cd(char **cmd, t_client *cl)
 	cl->info.env.oldpwd = cl->info.env.pwd;
 	if ((cl->info.env.pwd = ft_strdup(pwd)) == NULL)
 		return (ERR_MALLOC);
-	wattron(cl->ncu.chatwin, COLOR_PAIR(CL_GREEN));
-	wprintw(cl->ncu.chatwin, "SUCCESS");
-	wattroff(cl->ncu.chatwin, COLOR_PAIR(CL_GREEN));
-	wprintw(cl->ncu.chatwin, " Changed directory to \"%s\"\n", pwd);
+	wprintw(cl->ncu.chatwin, "Changed directory to \"%s\"\n", pwd);
 	wrefresh(cl->ncu.chatwin);
-	cl->precmd = cl_new_command("\\ls -ap", cl->ncu.clistwin,
-		(char *[]){ "", "" }, cl->precmd);
+	new_cmd = cl_command_new((char *[]){ "\\ls -ap", NULL }, cl->ncu.clistwin, " ");
+	cl->cmd_list = list_insert_head(new_cmd, cl->cmd_list);
 	return (IS_OK);
 }

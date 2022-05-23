@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/23 11:14:10 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/17 13:22:47 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/02/06 18:42:07 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int				sv_pasv_success(char *port, t_client *cl)
 	nb = ft_atoi(port) << 8;
 	errnb = sv_response(cl, "227 =%s,%d,%d (%s)",
 	addr, ft_atoi(port) >> 8, nb >> 8, port);
-	if (FT_CHECK(g_serv.options, sv_interactive))
+	if (GET_BIT(g_serv.options, sv_interactive))
 		printf("Client "FTP_YELLOW"%d"FTP_RESET": DATA %s port %s open.\n",
 		cl->fd, addr, port);
 	free(port);
@@ -88,8 +88,8 @@ int						sv_pasv(char **cmds, t_client *cl)
 {
 	ft_strdel(&cl->data.port);
 	ft_close(&cl->data.pasv_fd);
-	ft_close(&cl->data.socket);
-	if (FT_CHECK(g_serv.options, sv_user_mode) && !cl->login.logged)
+	ft_close(&cl->data.sock_fd);
+	if (GET_BIT(g_serv.options, sv_user_mode) && !cl->login.logged)
 		return (sv_response(cl, "530 Please login with USER and PASS"));
 	if (!sv_check_err(cl->errnb, sizeof(cl->errnb) / sizeof(cl->errnb[0])))
 		return (sv_response(cl, "421 Closing connection"));

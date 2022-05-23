@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 15:56:52 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/21 15:28:39 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/02/06 18:04:56 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	sv_preprocess(char **cmds, t_client *cl, char *opt)
 	int			errnb;
 
 	if (cl->data.port
-	&& (errnb = sv_connect_to(&cl->data.socket, cl)) != IS_OK)
+	&& (errnb = sv_connect_to(&cl->data.sock_fd, cl)) != IS_OK)
 		return (errnb);
 	return (cl->data.function(opt, cmds, cl));
 }
@@ -29,7 +29,10 @@ int			sv_new_pid(char **cmds, t_client *cl, char *opt)
 
 	if (cl->data.pid > 0)
 		return (sv_response(cl, "425 Service not available yet"));
-	if (cl->data.pasv_fd > 0 && cl->data.socket < 0)
+	printf("pasv_fd %d, sock_fd %d\n", cl->data.pasv_fd, cl->data.sock_fd);
+	if (cl->data.pasv_fd > 0)
+		return (IS_OK);
+	if (cl->data.sock_fd < 0)
 		return (sv_response(cl, "425 Connection not established"));
 	cl->data.pid = fork();
 	if (cl->data.pid < 0)
@@ -41,7 +44,7 @@ int			sv_new_pid(char **cmds, t_client *cl, char *opt)
 		sv_server_end(&g_serv, 0);
 		exit(errnb);
 	}
-	if (FT_CHECK(g_serv.options, sv_interactive))
+	if (GET_BIT(g_serv.options, sv_interactive))
 		printf("Client "FTP_GREEN"%d"FTP_RESET": DATA transfert started...\n",
 		cl->fd);
 	sv_free_data(&cl->data);

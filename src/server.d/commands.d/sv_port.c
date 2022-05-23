@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 18:30:08 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/17 13:23:21 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/02/06 17:45:06 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void		copy_address(char *s, char **addr)
 static int		sv_port_check(char *cmd, t_client *cl, char ***info, int *err)
 {
 	*err = IS_OK;
-	if (FT_CHECK(g_serv.options, sv_user_mode) && !cl->login.logged)
+	if (GET_BIT(g_serv.options, sv_user_mode) && !cl->login.logged)
 		*err = sv_response(cl, "530 Please login with USER and PASS");
 	else if (!sv_check_err(cl->errnb, sizeof(cl->errnb) / sizeof(cl->errnb[0])))
 		*err = sv_response(cl, "421 Closing connection");
@@ -62,7 +62,7 @@ int				sv_port(char **cmds, t_client *cl)
 
 	ft_strdel(&cl->data.port);
 	ft_close(&cl->data.pasv_fd);
-	ft_close(&cl->data.socket);
+	ft_close(&cl->data.sock_fd);
 	if (!sv_port_check(*(cmds + 1), cl, &info, &errnb))
 		return (errnb);
 	copy_address(cl->data.address, info);

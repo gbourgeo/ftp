@@ -14,7 +14,7 @@
 
 static void			print_info(char **cmds, t_client *cl, t_server *sv)
 {
-	if (!FT_CHECK(sv->options, sv_interactive))
+	if (!GET_BIT(sv->options, sv_interactive))
 		return ;
 	printf("Client "FTP_YELLOW"%d"FTP_RESET": Successfully ", cl->fd);
 	printf("reistered "FTP_UNDERLINED);

@@ -6,45 +6,46 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/26 16:58:33 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/18 13:47:13 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/19 14:34:34 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cl_main.h"
 
-static int		cl_client_exec_cmd(char **cmd, t_client *cl)
+static int		cl_client_exec_cmd(char **cmd_t, t_server *sv, t_client *cl)
 {
 	t_command	*cmds;
 	long		i;
 
 	cmds = cl_commands(0);
 	i = 0;
-	if (*cl->server.cmd == '\\')
-		return (cl_bslash(cmd, cl));
+	if (cmd_t[0][0] == '\\')
+		return (cl_bslash(cmd_t, cl));
 	while (i < (long)cl_commands(1))
 	{
-		if (!ftp_strcmp(cmds[i].name, cmd[0]))
-			return (cmds[i].func(cl->server.cmd, cmd, cl));
+		if (!ftp_strcmp(cmds[i].name, cmd_t[0]))
+			return (cmds[i].func(cmd_t, sv, cl));
 		i++;
 	}
-	return (cl_server_write(cl->server.cmd, &cl->server, cl));
+	if (sv == NULL)
+		return (ERR_NO_SERVER);
+	t_cmd_l *new_cmd = cl_command_new(cmd_t, cl->ncu.chatwin, " 2");
+	sv->cmd_list = list_insert_tail(new_cmd, sv->cmd_list);
+	return (NOT_DEFINED);
 }
 
-int				cl_client_commands(t_buff *ring, t_client *cl)
+int				cl_client_commands(char *cmd, t_server *sv, t_client *cl)
 {
-	char		**cmd;
+	char		**cmd_table;
 	int			errnb;
 
-	ft_ringbuffcpy(cl->server.cmd, sizeof(cl->server.cmd) - 2, ring);
-	ft_strncat(cl->server.cmd, "\n", 2);
-	wprintw(cl->ncu.chatwin, "> %s", cl->server.cmd);
+	wprintw(cl->ncu.chatwin, "> %s", cmd);
 	wrefresh(cl->ncu.chatwin);
-	if (!(cmd = ft_split_whitespaces(cl->server.cmd)))
+	if (!(cmd_table = ft_split_whitespaces(cmd)))
 		return (ERR_MALLOC);
-	errnb = IS_OK;
-	if (cmd[0] && cmd[0][0])
-		errnb = cl_client_exec_cmd(cmd, cl);
-	ft_tabdel(&cmd);
-	ft_strclr(cl->server.response);
+	errnb = NOT_DEFINED;
+	if (cmd_table[0] && cmd_table[0][0])
+		errnb = cl_client_exec_cmd(cmd_table, sv, cl);
+	ft_tabdel(&cmd_table);
 	return (errnb);
 }

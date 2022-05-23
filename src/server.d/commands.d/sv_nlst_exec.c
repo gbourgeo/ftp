@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 18:57:58 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/19 18:48:16 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/02/06 17:44:38 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int				sv_nlst_exec(char *opt, char **arg, t_client *cl)
 		errnb = ERR_MALLOC;
 	else if ((errnb = fill_command(cmd, arg, cl)) == IS_OK)
 	{
-		if (dup2(cl->data.socket, STDOUT_FILENO) < 0)
+		if (dup2(cl->data.sock_fd, STDOUT_FILENO) < 0)
 			errnb = ERR_DUP2;
 		else
 		{

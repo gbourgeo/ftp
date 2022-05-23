@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 22:09:20 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/17 15:09:36 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/21 14:19:31 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,13 @@
 
 int			cl_ctrl_c(t_buff *ring, t_client *cl)
 {
-	(void)cl;
 	ring->head = ring->buff;
 	ring->tail = ring->buff;
 	ring->len = 0;
 	ft_strclr(ring->buff);
 	wclear(cl->ncu.textwin);
 	wrefresh(cl->ncu.textwin);
-	return (IS_OK);
+	return (NOT_DEFINED);
 }
 
 int			cl_ctrl_d(t_buff *ring, t_client *cl)
@@ -29,21 +28,26 @@ int			cl_ctrl_d(t_buff *ring, t_client *cl)
 	(void)cl;
 	if (ring->len == 0)
 		return (ERR_QUIT);
-	return (IS_OK);
+	return (NOT_DEFINED);
 }
 
 int			cl_lf(t_buff *ring, t_client *cl)
 {
 	int		errnb;
+	int		verbose;
 
-	errnb = IS_OK;
+	errnb = NOT_DEFINED;
 	if (ring->len > 0)
 	{
 		ring->tail = ring->buff + ring->len;
+		*ring->tail++ = '\n';
 		*ring->tail++ = '\0';
-		cl->verbose = 1;
-		errnb = cl_client_commands(ring, cl);
-		cl->verbose = FT_CHECK(cl->options, cl_verbose);
+		verbose = GET_BIT(cl->options, cl_verbose);
+		SET_BIT(cl->options, cl_verbose, 1);
+		cl->printtowin = cl->ncu.chatwin;
+		errnb = cl_client_commands(ring->head, cl->server_list, cl);
+		SET_BIT(cl->options, cl_verbose, verbose);
+		*(ring->tail - 2) = '\0';
 		ring->head = ring->buff;
 		ring->tail = ring->buff;
 		ring->len = 0;
@@ -66,7 +70,7 @@ int			cl_backspace(t_buff *ring, t_client *cl)
 		getcurx(cl->ncu.textwin) - 1);
 		wrefresh(cl->ncu.textwin);
 	}
-	return (IS_OK);
+	return (NOT_DEFINED);
 }
 
 int			cl_key_dc(t_buff *ring, t_client *cl)
@@ -78,5 +82,5 @@ int			cl_key_dc(t_buff *ring, t_client *cl)
 		wdelch(cl->ncu.textwin);
 		wrefresh(cl->ncu.textwin);
 	}
-	return (IS_OK);
+	return (NOT_DEFINED);
 }

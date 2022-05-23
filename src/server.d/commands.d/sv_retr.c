@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/11 18:09:47 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/21 14:07:09 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/02/06 17:45:19 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int				sv_retr_exec(char *opt, char **cmds, t_client *cl)
 	sent = 0;
 	errnb = IS_OK;
 	while (sent < cl->data.fsize)
-		if ((ret = send(cl->data.socket, cl->data.file + sent,
+		if ((ret = send(cl->data.sock_fd, cl->data.file + sent,
 		cl->data.fsize - sent, MSG_DONTWAIT | MSG_NOSIGNAL)) <= 0)
 		{
 			if ((errnb = sv_send_error(ret)) != IS_OK)
@@ -80,13 +80,13 @@ int				sv_retr(char **cmds, t_client *cl)
 	cl->data.file = MAP_FAILED;
 	cl->data.fsize = -1;
 	cl->data.function = sv_retr_exec;
-	if (FT_CHECK(g_serv.options, sv_user_mode) && !cl->login.logged)
+	if (GET_BIT(g_serv.options, sv_user_mode) && !cl->login.logged)
 		return (sv_response(cl, "530 Please login with USER and PASS."));
 	if (!sv_check_err(cl->errnb, sizeof(cl->errnb) / sizeof(cl->errnb[0])))
 		return (sv_response(cl, "421 Closing connection"));
 	if (!cmds[1] || !sv_validpathname(cmds[1]) || cmds[2])
 		return (sv_response(cl, "501 %s", ft_get_error(ERR_INVALID_PARAM)));
-	if (!cl->data.port && cl->data.pasv_fd < 0 && cl->data.socket < 0)
+	if (!cl->data.port && cl->data.pasv_fd < 0 && cl->data.sock_fd < 0)
 		return (sv_response(cl, "425 Use PORT or PASV first"));
 	if ((errnb = ft_check_path(&cmds[1], cl->pwd, cl->home)) != IS_OK
 	|| (errnb = sv_retr_open_file(cmds[1], &cl->data)) != IS_OK

@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 15:00:11 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/17 13:28:52 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/02/06 17:43:16 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int				sv_client_init(t_client *cl, t_server *sv)
 	cl->data.type = (1 << data_type_ascii);
 	cl->data.byte_size = 8;
 	cl->data.pasv_fd = -1;
-	cl->data.socket = -1;
+	cl->data.sock_fd = -1;
 	cl->login.member = sv_getuserbyname(sv->users, SV_GUEST_NAME);
 	cl->login.logged = 0;
 	return (IS_OK);

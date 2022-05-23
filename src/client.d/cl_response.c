@@ -6,58 +6,56 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 19:17:13 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/17 17:12:04 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/04/18 13:17:42 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <netinet/in.h>
 #include "cl_main.h"
 
-static char			*cl_addrcpy(char addr[], char str[], int version)
+static int	convert(char str[], char **addr, size_t addr_len, char **p_port)
 {
-	int				i;
+	size_t			i;
 	unsigned short	port;
 	char			*nb1;
 	char			*nb2;
 
 	i = 0;
-	while (str[i] && i < INET6_ADDRSTRLEN)
+	if ((*addr = ft_memalloc(addr_len + 1)) == NULL)
+		return (ERR_MALLOC);
+	while (str[i] && i < addr_len)
 	{
+		(*addr)[i] = str[i];
 		if (str[i] == ',')
-			addr[i] = (version == 0) ? '.' : ':';
-		else
-			addr[i] = str[i];
+			(*addr)[i] = (addr_len == INET_ADDRSTRLEN) ? '.' : ':';
 		i++;
 	}
-	addr[i] = '\0';
-	if (!(nb2 = ft_strrchr(addr, (version == 0) ? '.' : ':')))
-		return (NULL);
+	nb2 = ft_strrchr(*addr, (addr_len == INET_ADDRSTRLEN) ? '.' : ':');
 	*nb2++ = '\0';
-	if (!(nb1 = ft_strrchr(addr, (version == 0) ? '.' : ':')))
-		return (NULL);
+	nb1 = ft_strrchr(*addr, (addr_len == INET_ADDRSTRLEN) ? '.' : ':');
 	*nb1++ = '\0';
 	port = ft_atoi(nb1) << 8;
 	port = port + ft_atoi(nb2);
-	return (ft_itoa(port));
+	*p_port = ft_itoa(port);
+	return ((*p_port == NULL) ? ERR_MALLOC : IS_OK);
 }
 
-static int			cl_connect_back(t_server *sv, t_client *cl)
+int			cl_connect_back(t_server *sv)
 {
-	char		addr[INET6_ADDRSTRLEN + 1];
+	char		*addr;
+	size_t		addr_len;
 	char		*port;
 	int			errnb;
 
-	if (!(port = cl_addrcpy(addr, sv->response + 5, cl->version)))
-		errnb = ERR_MALLOC;
-	else if ((errnb = cl_get_addrinfo(&sv->fd_data, addr, port, cl)) == IS_OK)
-		errnb = cl_server_write(sv->cmd, &cl->server, cl);
-	if (!cl->precmd)
-		ft_bzero(sv->response, sizeof(sv->response));
+	addr_len = (sv->ip_version == AF_INET) ? INET_ADDRSTRLEN : INET6_ADDRSTRLEN;
+	if ((errnb = convert(sv->response + 5, &addr, addr_len, &port)) == IS_OK)
+		errnb = cl_connect_to(&sv->fd_data, addr, port, NULL);
+	ft_strdel(&addr);
 	ft_strdel(&port);
 	return (errnb);
 }
 
-int					cl_response(t_server *sv, t_client *cl)
+int			cl_response(t_server *sv)
 {
 	int				errnb;
 
@@ -70,7 +68,6 @@ int					cl_response(t_server *sv, t_client *cl)
 		return (IS_OK);
 	}
 	if (ft_atoi(sv->response) == 227)
-		errnb = cl_connect_back(sv, cl);
-	sv->wait_response--;
+		errnb = cl_connect_back(sv);
 	return (errnb);
 }

@@ -6,21 +6,24 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 17:24:25 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/18 09:10:48 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/05/23 16:45:41 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cl_main.h"
 
-int					cl_pass(char *buf, char **cmd, t_client *cl)
+int					cl_pass(char **cmd, t_server *sv, t_client *cl)
 {
-	ft_strcpy(buf, "PASS");
-	ft_strncat(buf, " ", CMD_BUFF_SIZE);
-	ft_strncat(buf, cmd[1], CMD_BUFF_SIZE);
-	ft_strncat(buf, "\n", CMD_BUFF_SIZE);
-	cl->precmd = cl_new_command("NLST", cl->ncu.slistwin,
-	(char *[]){ "2", "22" }, cl->precmd);
-	return (cl_server_write(buf, &cl->server, cl));
+	t_cmd_l	*new_list;
+	int		ret;
+
+	if (sv == NULL)
+		return (ERR_NO_SERVER);
+	free(cmd[0]);
+	cmd[0] = ft_strdup("PASS");
+	new_list = cl_command_new(cmd, cl->ncu.chatwin, " ");
+	ret = cl_refresh_server_list_window(new_list, sv, cl);
+	return (ret);
 }
 
 int					cl_pass_help(t_command *cmd, t_client *cl)
