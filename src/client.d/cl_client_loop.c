@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/13 08:44:55 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/07/02 08:34:08 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/02 09:24:33 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ static void			check_fdset(fd_set *r, fd_set *w, t_client *cl)
 		if (sv->fd_data > 0)
 		{
 			if (FD_ISSET(sv->fd_data, r))
-				sv->errnb[5] = cl_server_recv_data(sv, cl);
+				sv->errnb[4] = cl_server_recv_data(sv, cl);
 			if (FD_ISSET(sv->fd_data, w))
-				sv->errnb[6] = cl_server_send_data(sv, cl);
+				sv->errnb[5] = cl_server_send_data(sv, cl);
 		}
 		sv = (void *)sv->list.next;
 	}

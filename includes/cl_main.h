@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/12 18:46:47 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/06/27 17:38:15 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/02 09:25:29 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ typedef struct		s_server
 	t_buff				rd;
 	t_buff				wr;
 	t_cmd_l				*cmd_list;
-	int					errnb[5];
+	int					errnb[6];
 	char				response[CMD_BUFF_SIZE];
 }					t_server;
 
@@ -133,7 +133,7 @@ typedef struct		s_client
 	WINDOW			*printtowin;
 	t_cmd_l			*cmd_list;
 	t_server		*server_list;
-	int				errnb[4];
+	int				errnb[2];
 	t_buff			rd;
 	t_hist			*hist;
 	int				options;
