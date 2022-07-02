@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 23:54:20 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/13 23:05:35 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/06/28 11:37:57 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_server * cl_server_new(const char *addr, const char *port)
 		sv->wr.head = sv->wr.buff;
 		sv->wr.tail = sv->wr.buff;
 		while (i < sizeof(sv->errnb) / sizeof(sv->errnb[0]))
-			sv->errnb[i++] = NOT_DEFINED;
+			sv->errnb[i++] = IS_OK;
 	}
 	return (sv);
 }

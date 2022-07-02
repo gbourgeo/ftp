@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/09 02:56:47 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/18 13:41:25 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/06/28 11:39:25 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ int				cl_nlst(char **cmd, t_server *sv, t_client *cl)
 
 	if (sv == NULL)
 		return (ERR_NO_SERVER);
-	new_cmd = cl_command_new((char *[]){ "PASV", NULL }, cl->ncu.chatwin, " ");
+	new_cmd = cl_command_new((char *[]){ "PASV", NULL }, cl->ncu.chatwin, " 2");
 	sv->cmd_list = list_insert_tail(new_cmd, sv->cmd_list);
 	free(cmd[0]);
 	cmd[0] = ft_strdup("NLST");
-	new_cmd = cl_command_new(cmd, cl->printtowin, "2 2");
+	new_cmd = cl_command_new(cmd, cl->printtowin, " 2");
 	new_cmd->data_socket_state = DATA_SOCKET_RECEIVE;
 	sv->cmd_list = list_insert_tail(new_cmd, sv->cmd_list);
-	return (NOT_DEFINED);
+	return (IS_OK);
 }
 
 int				cl_nlst_help(t_command *cmd, t_client *cl)

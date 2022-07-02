@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 04:51:10 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/13 18:18:19 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/06/28 11:39:53 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,6 @@ int				cl_init(char **environ, t_client *cl)
 	cl->rd.len = 0;
 	i = 0;
 	while (i < sizeof(cl->errnb) / sizeof(cl->errnb[0]))
-		cl->errnb[i++] = NOT_DEFINED;
+		cl->errnb[i++] = IS_OK;
 	return (IS_OK);
 }

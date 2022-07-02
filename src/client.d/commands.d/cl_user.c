@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/17 15:29:57 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/05/23 16:52:12 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/06/28 11:39:41 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int					cl_user(char **cmd, t_server *sv, t_client *cl)
 	cmd[0] = ft_strdup("USER");
 	new_cmd = cl_command_new(cmd, cl->ncu.chatwin, " 3");
 	sv->cmd_list = list_insert_tail(new_cmd, sv->cmd_list);
-	return (NOT_DEFINED);
+	return (IS_OK);
 }
 
 int					cl_user_help(t_command *cmd, t_client *cl)

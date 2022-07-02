@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 10:40:36 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/22 19:06:52 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/05/26 00:49:32 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,3 +56,7 @@ void		*elem_insert_tail(void *elem, void *list)
 	return (list);
 }
 
+void		*elem_next(void *elem)
+{
+	return (((t_celem *)elem)->elem.next);
+}

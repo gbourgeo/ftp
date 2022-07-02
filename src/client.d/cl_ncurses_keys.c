@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 22:09:20 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/21 14:19:31 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/06/28 11:40:01 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int			cl_ctrl_c(t_buff *ring, t_client *cl)
 	ft_strclr(ring->buff);
 	wclear(cl->ncu.textwin);
 	wrefresh(cl->ncu.textwin);
-	return (NOT_DEFINED);
+	return (IS_OK);
 }
 
 int			cl_ctrl_d(t_buff *ring, t_client *cl)
@@ -28,7 +28,7 @@ int			cl_ctrl_d(t_buff *ring, t_client *cl)
 	(void)cl;
 	if (ring->len == 0)
 		return (ERR_QUIT);
-	return (NOT_DEFINED);
+	return (IS_OK);
 }
 
 int			cl_lf(t_buff *ring, t_client *cl)
@@ -36,7 +36,7 @@ int			cl_lf(t_buff *ring, t_client *cl)
 	int		errnb;
 	int		verbose;
 
-	errnb = NOT_DEFINED;
+	errnb = IS_OK;
 	if (ring->len > 0)
 	{
 		ring->tail = ring->buff + ring->len;
@@ -70,7 +70,7 @@ int			cl_backspace(t_buff *ring, t_client *cl)
 		getcurx(cl->ncu.textwin) - 1);
 		wrefresh(cl->ncu.textwin);
 	}
-	return (NOT_DEFINED);
+	return (IS_OK);
 }
 
 int			cl_key_dc(t_buff *ring, t_client *cl)
@@ -82,5 +82,5 @@ int			cl_key_dc(t_buff *ring, t_client *cl)
 		wdelch(cl->ncu.textwin);
 		wrefresh(cl->ncu.textwin);
 	}
-	return (NOT_DEFINED);
+	return (IS_OK);
 }

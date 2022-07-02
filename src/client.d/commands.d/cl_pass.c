@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/17 17:24:25 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/05/23 16:45:41 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/05/30 12:23:45 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int					cl_pass(char **cmd, t_server *sv, t_client *cl)
 		return (ERR_NO_SERVER);
 	free(cmd[0]);
 	cmd[0] = ft_strdup("PASS");
-	new_list = cl_command_new(cmd, cl->ncu.chatwin, " ");
+	new_list = cl_command_new(cmd, cl->ncu.chatwin, " 2");
 	ret = cl_refresh_server_list_window(new_list, sv, cl);
 	return (ret);
 }

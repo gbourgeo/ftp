@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 19:15:11 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/05/23 16:42:22 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/05/30 12:24:41 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int				cl_rmdir(char **cmd, t_server *sv, t_client *cl)
 		return (ERR_NO_SERVER);
 	free(cmd[0]);
 	cmd[0] = ft_strdup("RMD");
-	new_list = cl_command_new(cmd, cl->ncu.chatwin, " ");
+	new_list = cl_command_new(cmd, cl->ncu.chatwin, " 2");
 	ret = cl_refresh_server_list_window(new_list, sv, cl);
 	return (ret);
 }

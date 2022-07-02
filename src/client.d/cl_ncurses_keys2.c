@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 22:11:34 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/13 18:26:35 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/06/28 11:40:05 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int			cl_key_up(t_buff *ring, t_client *cl)
 {
 	if (!cl->hist || !cl->hist->list.next)
-		return (NOT_DEFINED);
+		return (IS_OK);
 	ft_strdel(&cl->hist->line);
 	cl->hist->line = ft_strdup(ring->buff);
 	cl->hist = (void *)cl->hist->list.next;
@@ -25,13 +25,13 @@ int			cl_key_up(t_buff *ring, t_client *cl)
 	wclear(cl->ncu.textwin);
 	wprintw(cl->ncu.textwin, "%s", ring->buff);
 	wrefresh(cl->ncu.textwin);
-	return (NOT_DEFINED);
+	return (IS_OK);
 }
 
 int			cl_key_down(t_buff *ring, t_client *cl)
 {
 	if (!cl->hist || !cl->hist->list.prev)
-		return (NOT_DEFINED);
+		return (IS_OK);
 	ft_strdel(&cl->hist->line);
 	cl->hist->line = ft_strdup(ring->buff);
 	cl->hist = (void *)cl->hist->list.prev;
@@ -41,7 +41,7 @@ int			cl_key_down(t_buff *ring, t_client *cl)
 	wclear(cl->ncu.textwin);
 	wprintw(cl->ncu.textwin, "%s", ring->buff);
 	wrefresh(cl->ncu.textwin);
-	return (NOT_DEFINED);
+	return (IS_OK);
 }
 
 int			cl_key_left(t_buff *ring, t_client *cl)
@@ -53,7 +53,7 @@ int			cl_key_left(t_buff *ring, t_client *cl)
 		wmove(cl->ncu.textwin, getcury(cl->ncu.textwin),
 		getcurx(cl->ncu.textwin) - 1);
 	}
-	return (NOT_DEFINED);
+	return (IS_OK);
 }
 
 int			cl_key_right(t_buff *ring, t_client *cl)
@@ -65,5 +65,5 @@ int			cl_key_right(t_buff *ring, t_client *cl)
 		wmove(cl->ncu.textwin, getcury(cl->ncu.textwin),
 		getcurx(cl->ncu.textwin) + 1);
 	}
-	return (NOT_DEFINED);
+	return (IS_OK);
 }

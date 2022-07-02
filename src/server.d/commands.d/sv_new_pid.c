@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 15:56:52 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/02/06 18:04:56 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/05/30 13:23:34 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int			sv_new_pid(char **cmds, t_client *cl, char *opt)
 
 	if (cl->data.pid > 0)
 		return (sv_response(cl, "425 Service not available yet"));
-	printf("pasv_fd %d, sock_fd %d\n", cl->data.pasv_fd, cl->data.sock_fd);
 	if (cl->data.pasv_fd > 0)
 		return (IS_OK);
 	if (cl->data.sock_fd < 0)
@@ -45,7 +44,7 @@ int			sv_new_pid(char **cmds, t_client *cl, char *opt)
 		exit(errnb);
 	}
 	if (GET_BIT(g_serv.options, sv_interactive))
-		printf("Client "FTP_GREEN"%d"FTP_RESET": DATA transfert started...\n",
+		printf("Client "FTP_GREEN"%d"FTP_RESET": Transfert to DATA channel started\n",
 		cl->fd);
 	sv_free_data(&cl->data);
 	return (IS_OK);

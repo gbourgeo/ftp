@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/22 02:21:51 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/12 13:45:45 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/05/30 13:21:54 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ int				sv_check_pid(t_client *cl, t_server *sv)
 	{
 		if (cl->data.function == sv_nlst_exec)
 			errnb = check_pid_value("212 List OK", status, cl);
-		else if (cl->data.function == sv_retr_exec)
+		else if (cl->data.function == sv_retr_exec || cl->data.function == sv_stor_exec)
 			errnb = check_pid_value("250 Tranfert OK", status, cl);
 		else
 			errnb = check_pid_value("200 Command OK", status, cl);
 		if (GET_BIT(sv->options, sv_interactive))
-			printf("Client "FTP_YELLOW"%d"FTP_RESET": DATA transfert ended "
-			"(status: %d).\n", cl->fd, status);
+			printf("Client "FTP_YELLOW"%d"FTP_RESET": Transfert to DATA channel ended "
+			"(status: %d)\n", cl->fd, status);
 	}
 	return (errnb);
 }

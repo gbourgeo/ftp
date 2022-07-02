@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/20 06:46:11 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/13 18:08:17 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/02 09:02:02 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@
 
 /*
 ** FTP_BUFF_SIZE :
-** Size of the client/server command line.
+** Size of the client/server command line buffer.
 ** Low value and long command will probably lead to an obsolete interaction
 ** with the server.
 */
@@ -63,7 +63,6 @@
 
 enum
 {
-	NOT_DEFINED = -1,
 	IS_OK = 0,
 	ERR_HELP,
 	ERR_NB_PARAMS,

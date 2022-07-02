@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 15:46:03 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/05/01 16:06:07 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/02 09:00:29 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,18 @@ int			cl_command_exec_cl(t_client *cl)
 	int			errnb;
 
 	cmd = cl->cmd_list;
-	errnb = NOT_DEFINED;
+	errnb = IS_OK;
 	if (cmd == NULL)
-		return (NOT_DEFINED);
+		return (IS_OK);
 	sv = (t_server *)cmd->sv;
 	if (cmd->ret_codes[0] == ' ')
 	{
 		if ((cl->printtowin = cmd->printtowin) != cl->ncu.chatwin)
 			wclear(cmd->printtowin);
+		wrefresh(cl->printtowin);
 		errnb = cl_client_commands(cmd->full_cmd, sv, cl);
 		ft_strcpy(cmd->ret_codes, cmd->ret_codes + 1);
-		if (sv)
-			ft_strclr(sv->response);
+		ft_strclr(sv->response);
 	}
 	else if (sv && ft_strchr(sv->response, '\n'))
 	{
@@ -45,8 +45,6 @@ int			cl_command_exec_cl(t_client *cl)
 		}
 		ft_strclr(sv->response);
 	}
-	// else if (!sv)
-	// 	cl->cmd_list = cl_command_remove_elem(cmd, cl->cmd_list);
 	if (cmd->ret_codes[0] == '\0')
 		cl->cmd_list = cl_command_remove_elem(cmd, cl->cmd_list);
 	return (errnb);
@@ -58,13 +56,14 @@ int			cl_command_exec_sv(t_server *sv, t_client *cl)
 	int		errnb;
 
 	if (sv == NULL || sv->cmd_list == NULL)
-		return (NOT_DEFINED);
+		return (IS_OK);
 	cmd = sv->cmd_list;
-	errnb = NOT_DEFINED;
+	errnb = IS_OK;
 	if (cmd->ret_codes[0] == ' ')
 	{
 		if ((cl->printtowin = cmd->printtowin) != cl->ncu.chatwin)
 			wclear(cmd->printtowin);
+		wrefresh(cl->printtowin);
 		errnb = cl_server_write(cmd->full_cmd, sv);
 		ft_strcpy(cmd->ret_codes, cmd->ret_codes + 1);
 		ft_strclr(sv->response);
@@ -81,6 +80,13 @@ int			cl_command_exec_sv(t_server *sv, t_client *cl)
 			}
 			else if (ft_strncmp(sv->response, "227 ", 4) == 0)
 				errnb = cl_connect_back(sv);
+			else if (ft_strncmp(sv->response, "125 ", 4) == 0)
+			{
+				if (ft_strncmp(cmd->full_cmd, "STOR ", 5) == 0)
+					cmd->data_socket_state = DATA_SOCKET_SEND;
+				else if (ft_strncmp(cmd->full_cmd, "RETR ", 5) == 0)
+					cmd->data_socket_state = DATA_SOCKET_RECEIVE;
+			}
 			ft_strcpy(cmd->ret_codes, cmd->ret_codes + 1);
 		}
 		ft_strclr(sv->response);

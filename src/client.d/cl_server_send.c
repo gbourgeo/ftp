@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 18:51:48 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/14 16:40:23 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/06/28 11:42:34 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	cl_send_error(int errnb)
 	if (errnb == 0 || errno == ECONNRESET || errno == EPIPE)
 		return (ERR_DISCONNECT);
 	if (errno == EAGAIN || errno == EWOULDBLOCK)
-		return (NOT_DEFINED);
+		return (IS_OK);
 	return (ERR_SEND);
 }
 
@@ -32,7 +32,7 @@ int			cl_server_send(t_buff *ring, int fd)
 	int		ret;
 
 	if (ring->len == 0)
-		return (NOT_DEFINED);
+		return (IS_OK);
 	if (ring->head < ring->tail)
 		ret = send(fd, ring->head, ring->tail - ring->head,
 		MSG_DONTWAIT | MSG_NOSIGNAL);
@@ -45,5 +45,5 @@ int			cl_server_send(t_buff *ring, int fd)
 	if ((ring->head += ret) >= ring->buff + sizeof(ring->buff))
 		ring->head = ring->buff;
 	ring->len -= ret;
-	return (NOT_DEFINED);
+	return (IS_OK);
 }

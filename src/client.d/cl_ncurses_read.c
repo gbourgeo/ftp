@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 16:44:32 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/19 14:27:09 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/06/28 11:42:46 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ static int			cl_default(int ret, t_buff *ring, t_client *cl)
 				ring->tail - ring->buff);
 			wrefresh(cl->ncu.textwin);
 		}
-		return (NOT_DEFINED);
+		return (IS_OK);
 	}
-	return (NOT_DEFINED);
+	return (IS_OK);
 }
 
 int					cl_ncurses_read(t_buff *ring, t_client *cl)

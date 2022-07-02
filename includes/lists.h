@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 10:38:41 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/22 18:38:17 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/05/26 00:49:54 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ void		*list_insert_head(void *elem, void *list);
 void		*list_insert_tail(void *elem, void *list);
 void		*elem_insert_head(void *elem, void *list);
 void		*elem_insert_tail(void *elem, void *list);
+void		*elem_next(void *elem);
 
 #endif

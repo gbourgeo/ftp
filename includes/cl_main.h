@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/12 18:46:47 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/05/23 16:37:39 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/06/27 17:38:15 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ typedef struct		s_client
 {
 	t_common		info;
 	t_sighandler	sig[NSIG];
-	int				options;
 	t_ncu			ncu;
 	WINDOW			*printtowin;
 	t_cmd_l			*cmd_list;
@@ -137,6 +136,7 @@ typedef struct		s_client
 	int				errnb[4];
 	t_buff			rd;
 	t_hist			*hist;
+	int				options;
 }					t_client;
 
 struct s_client		g_cl;

@@ -115,6 +115,7 @@ quit        Quit the server
 refresh     Refresh list Windows
 rm          Remove file from server
 rmdir       Remove directory from server
+user        Send username to the server
 ```
 All commands, except '?' and '\\', are translated by the client to
 communicate with the server.

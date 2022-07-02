@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 19:28:46 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/19 14:36:22 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/06/28 11:39:01 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int		cl_pid_ret(int status, const char *msg, t_client *cl)
 	wattroff(cl->ncu.chatwin, COLOR_PAIR(CL_BACK_RED));
 	wprintw(cl->ncu.chatwin, " %s %d\n", msg, status);
 	wrefresh(cl->ncu.chatwin);
-	return (NOT_DEFINED);
+	return (IS_OK);
 }
 
 static int		cl_bslash_father(int fd, int pid, t_client *cl)

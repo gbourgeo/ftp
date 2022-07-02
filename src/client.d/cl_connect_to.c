@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/05 23:31:35 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/17 17:22:30 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/06/28 11:42:22 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int			cl_connect_to(int *fd, char *addr, char *port, int *ip_version)
 	on = 1;
 	if (setsockopt(*fd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)))
 		return (ERR_SETSOCKOPT);
-	return (NOT_DEFINED);
+	return (IS_OK);
 }
 
 int 		cl_connect_to_server(t_server *sv, t_client *cl)

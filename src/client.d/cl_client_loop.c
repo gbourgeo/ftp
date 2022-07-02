@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/13 08:44:55 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/05/01 16:19:56 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/02 08:34:08 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,14 @@ static int			init_fdset(fd_set *r, fd_set *w, t_client *cl)
 			if (sv->fd_ctrl > max)
 				max = sv->fd_ctrl;
 		}
-		if (sv->fd_data > 0)
+		if (sv->fd_data > 0
+		&& sv->cmd_list
+		&& sv->cmd_list->data_socket_state != DATA_SOCKET_NOOPERATION)
 		{
-			if (sv->cmd_list && sv->cmd_list->data_socket_state != DATA_SOCKET_NOOPERATION)
-				FD_SET(sv->fd_data, (sv->cmd_list->data_socket_state == DATA_SOCKET_RECEIVE) ? r : w);
+			if (sv->cmd_list->data_socket_state == DATA_SOCKET_RECEIVE)
+				FD_SET(sv->fd_data, r);
+			else if (sv->cmd_list->data_socket_state == DATA_SOCKET_SEND)
+				FD_SET(sv->fd_data, w);
 			if (sv->fd_data > max)
 				max = sv->fd_data;
 		}
@@ -61,14 +65,10 @@ static void			check_fdset(fd_set *r, fd_set *w, t_client *cl)
 		if (sv->fd_ctrl > 0)
 		{
 			if (FD_ISSET(sv->fd_ctrl, r))
-			{
 				sv->errnb[0] = cl_server_recv(&sv->rd, sv->fd_ctrl);
-			}
 			sv->errnb[1] = cl_ncurses_write(&sv->rd, sv, cl);
 			if (FD_ISSET(sv->fd_ctrl, w))
-			{
 				sv->errnb[2] = cl_server_send(&sv->wr, sv->fd_ctrl);
-			}
 			sv->errnb[3] = cl_command_exec_sv(sv, cl);
 		}
 		if (sv->fd_data > 0)
@@ -91,34 +91,23 @@ static int			check_client_errors(t_client *cl)
 	{
 		if (cl->errnb[i] == ERR_QUIT)
 			return (ERR_QUIT);
-		if (cl->errnb[i] == IS_OK)
-		{
-			wattron(cl->ncu.chatwin, COLOR_PAIR(CL_BACK_GREEN));
-			wprintw(cl->ncu.chatwin, "SUCCESS cl[%d]\n", i);
-			wattroff(cl->ncu.chatwin, COLOR_PAIR(CL_BACK_GREEN));
-			wrefresh(cl->ncu.chatwin);
-			cl->errnb[i] = NOT_DEFINED;
-			wmove(cl->ncu.textwin, 0, 0);
-			wrefresh(cl->ncu.textwin);
-		}
-		else if (cl->errnb[i] != NOT_DEFINED)
+		if (cl->errnb[i] != IS_OK)
 		{
 			wattron(cl->ncu.chatwin, COLOR_PAIR(CL_BACK_RED));
 			wprintw(cl->ncu.chatwin, "ERROR");
-			wattron(cl->ncu.chatwin, COLOR_PAIR(CL_BLUE));
+			wattroff(cl->ncu.chatwin, COLOR_PAIR(CL_BACK_RED));
 			wprintw(cl->ncu.chatwin, " : %s\n", ft_get_error(cl->errnb[i]));
-			wattroff(cl->ncu.chatwin, COLOR_PAIR(CL_BLUE));
 			wrefresh(cl->ncu.chatwin);
-			cl->errnb[i] = NOT_DEFINED;
 			wmove(cl->ncu.textwin, 0, 0);
 			wrefresh(cl->ncu.textwin);
+			cl->errnb[i] = IS_OK;
 		}
 		i++;
 	}
 	return (IS_OK);
 }
 
-static int			check_servers_errors(t_client * cl)
+static void			check_servers_errors(t_client * cl)
 {
 	int			i;
 	t_server	*server;
@@ -130,26 +119,15 @@ static int			check_servers_errors(t_client * cl)
 		i = 0;
 		while (i < (int)(sizeof(server->errnb) / sizeof(server->errnb[0])))
 		{
-			if (server->errnb[i] == IS_OK)
+			if (server->errnb[i] != IS_OK)
 			{
-				wattron(cl->ncu.chatwin, COLOR_PAIR(CL_BACK_GREEN));
-				wprintw(cl->ncu.chatwin, "SUCCESS sv[%d]\n", i);
-				wattroff(cl->ncu.chatwin, COLOR_PAIR(CL_BACK_GREEN));
-				wrefresh(cl->ncu.chatwin);
-				cl->errnb[i] = NOT_DEFINED;
-				wmove(cl->ncu.textwin, 0, 0);
-				wrefresh(cl->ncu.textwin);
-				server->errnb[i] = NOT_DEFINED;
-			}
-			if (server->errnb[i] != NOT_DEFINED)
-			{
-				ft_strcpy(server->response, "500 Error\n");
 				wattron(cl->ncu.chatwin, COLOR_PAIR(CL_BACK_RED));
 				wprintw(cl->ncu.chatwin, "ERROR");
-				wattron(cl->ncu.chatwin, COLOR_PAIR(CL_BLUE));
+				wattroff(cl->ncu.chatwin, COLOR_PAIR(CL_BACK_RED));
 				wprintw(cl->ncu.chatwin, " : %s\n", ft_get_error(server->errnb[i]));
-				wattroff(cl->ncu.chatwin, COLOR_PAIR(CL_BLUE));
 				wrefresh(cl->ncu.chatwin);
+				wmove(cl->ncu.textwin, 0, 0);
+				wrefresh(cl->ncu.textwin);
 				if (server->errnb[i] == ERR_DISCONNECT)
 				{
 					next = (void *)server->list.next;
@@ -157,16 +135,13 @@ static int			check_servers_errors(t_client * cl)
 					server = next;
 					break ;
 				}
-				server->errnb[i] = NOT_DEFINED;
-				wmove(cl->ncu.textwin, 0, 0);
-				wrefresh(cl->ncu.textwin);
+				server->errnb[i] = IS_OK;
 			}
 			i++;
 		}
 		if (server)
 			server = (void *)server->list.next;
 	}
-	return (IS_OK);
 }
 
 int					cl_client_loop(t_client *cl)
@@ -180,10 +155,11 @@ int					cl_client_loop(t_client *cl)
 	wprintw(cl->ncu.chatwin, "Welcome to GBO FTP Client !\n");
 	wprintw(cl->ncu.chatwin, "Type '?' for a list of available commands.\n\n");
 	wrefresh(cl->ncu.chatwin);
-	while (check_client_errors(cl) == IS_OK && check_servers_errors(cl) == IS_OK)
+	while (check_client_errors(cl) == IS_OK)
 	{
+		check_servers_errors(cl);
 		timeout.tv_sec = 0;
-		timeout.tv_usec = 500;
+		timeout.tv_usec = 100000L;
 		max = init_fdset(&fds[0], &fds[1], cl);
 		ret = select(max + 1, &fds[0], &fds[1], NULL, &timeout);
 		if (ret < 0)

@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/30 18:19:02 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/17 17:24:06 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/06/28 11:39:31 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int				cl_pwd(char **cmd, t_server *sv, t_client *cl)
 		return (ERR_NO_SERVER);
 	free(cmd[0]);
 	cmd[0] = ft_strdup("PWD");
-	new_cmd = cl_command_new(cmd, cl->ncu.chatwin, " ");
+	new_cmd = cl_command_new(cmd, cl->ncu.chatwin, " 2");
 	sv->cmd_list = list_insert_tail(new_cmd, sv->cmd_list);
-	return (NOT_DEFINED);
+	return (IS_OK);
 }
 
 int				cl_pwd_help(t_command *cmd, t_client *cl)
