@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 15:46:03 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/07/02 09:00:29 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/02 09:16:21 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int			cl_command_exec_cl(t_client *cl)
 		wrefresh(cl->printtowin);
 		errnb = cl_client_commands(cmd->full_cmd, sv, cl);
 		ft_strcpy(cmd->ret_codes, cmd->ret_codes + 1);
-		ft_strclr(sv->response);
 	}
 	else if (sv && ft_strchr(sv->response, '\n'))
 	{
