@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/08 18:04:41 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/22 18:04:48 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/02 09:55:43 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,4 @@ void				cl_server_close_data(t_server *sv)
 	ft_close(&sv->fd_data);
 	ft_strdel(&sv->filename);
 	ft_close(&sv->filefd);
-	sv->ret = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/20 06:46:11 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/07/02 09:02:02 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/02 09:55:13 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ enum
 	ERR_TERM_NOT_FOUND,
 	ERR_PIPE,
 	ERR_ALREADY_CONNECTED,
+	ERR_BYTES_SENT,
 };
 
 typedef struct		s_env

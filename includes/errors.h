@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/01 13:38:55 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/01/01 13:39:52 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/02 09:54:13 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,5 @@ static const char	*g_errors[] = {
 		"Terminal type is not defined",
 		"pipe failed",
 		"Already connected to a server",
+		"Bytes send differs from bytes read",
 };

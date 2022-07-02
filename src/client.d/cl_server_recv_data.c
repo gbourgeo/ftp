@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 02:21:30 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/07/02 08:37:43 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/02 09:56:59 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,24 @@
 #include <fcntl.h>
 #include "cl_main.h"
 
-static int		cl_recv_error(t_server *sv)
+static int		cl_recv_error(t_server *sv, int ret_value, int err_code)
 {
 	if (errno == EAGAIN || errno == EWOULDBLOCK)
 		return (IS_OK);
-	return ((sv->ret-- < 0) ? ERR_RECV : IS_OK);
+	cl_server_close_data(sv);
+	return ((ret_value < 0) ? err_code : IS_OK);
 }
 
 int				cl_server_recv_data(t_server *sv, t_client *cl)
 {
 	char		buff[DATA_BUFF_SIZE];
-	int			err;
+	int			len;
+	int			ret;
 
-	sv->ret = recv(sv->fd_data, buff, sizeof(buff),
+	len = recv(sv->fd_data, buff, sizeof(buff),
 		MSG_DONTWAIT | MSG_NOSIGNAL);
-	if (sv->ret <= 0)
-		return (cl_recv_error(sv));
+	if (len <= 0)
+		return (cl_recv_error(sv, len, ERR_RECV));
 	if (sv->filename != NULL)
 	{
 		wprintw(cl->ncu.chatwin, "Opening file : %s\n", sv->filename);
@@ -40,13 +42,13 @@ int				cl_server_recv_data(t_server *sv, t_client *cl)
 		if (sv->filefd < 0
 		&& (sv->filefd = open(sv->filename, O_CREAT | O_TRUNC | O_WRONLY,
 			0644)) < 0)
-			return (cl_recv_error(sv));
-		err = (write(sv->filefd, buff, sv->ret) != sv->ret) ? ERR : OK;
+			return (cl_recv_error(sv, -1, ERR_OPEN));
+		ret = (write(sv->filefd, buff, len) != len) ? ERR : OK;
 	}
 	else
 	{
-		err = wprintw(cl->printtowin, "%.*s", sv->ret, buff);
+		ret = wprintw(cl->printtowin, "%.*s", len, buff);
 		wrefresh(cl->printtowin);
 	}
-	return ((err == OK) ? IS_OK : ERR_WRITE);
+	return ((ret == OK) ? IS_OK : ERR_WRITE);
 }
