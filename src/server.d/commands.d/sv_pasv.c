@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/23 11:14:10 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/05/30 11:50:51 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/02 10:19:00 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,10 @@ static int				sv_pasv_success(char *port, t_client *cl)
 	i = 0;
 	while (g_serv.addr[cl->version][i])
 	{
+		addr[i] = g_serv.addr[cl->version][i];
 		if ((cl->version == sv_v4 && addr[i] == '.')
 		|| (cl->version == sv_v6 && addr[i] == ':'))
 			addr[i] = ',';
-		else
-			addr[i] = g_serv.addr[cl->version][i];
 		i++;
 	}
 	addr[i] = '\0';

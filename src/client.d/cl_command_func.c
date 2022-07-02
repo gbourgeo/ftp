@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 16:24:51 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/22 19:18:29 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/02 10:56:03 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char		*cl_tabtostr(char **tab)
 		tab_size += ft_strlen(tab[i]) + 1;
 		i++;
 	}
-	ret = ft_memalloc(tab_size + 2);
+	ret = ft_memalloc(tab_size + 1);
 	if (ret == NULL)
 		return (ret);
 	i = 0;
@@ -36,7 +36,7 @@ static char		*cl_tabtostr(char **tab)
 		ft_strcat(ret, " ");
 		i++;
 	}
-	ret[tab_size] = '\n';
+	ret[tab_size - 1] = '\n';
 	return (ret);
 }
 

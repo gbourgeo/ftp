@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/30 18:18:43 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/05/30 13:14:33 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/02 11:03:12 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,18 @@ static int		cl_put_get_dest_path(char **cmd)
 {
 	char	*ptr;
 	char	*dest;
+	int		len;
 
 	if ((ptr = ft_strrchr(cmd[1], '/')) == NULL)
 		ptr = cmd[1];
-	dest = (char *)ft_memalloc(ft_strlen(ptr) + ft_strlen(cmd[2]) + 1);
+	dest = (char *)ft_memalloc(ft_strlen(ptr) + ft_strlen(cmd[2]) + 2);
 	if (dest == NULL)
 		return (ERR_MALLOC);
 	if (cmd[2])
 		ft_strcpy(dest, cmd[2]);
-	if (dest[ft_strlen(dest) - 1] != '/' && ptr[0] != '/')
+	if ((len = ft_strlen(dest)) == 0)
+		len = 1;
+	if (dest[len - 1] != '/' && ptr[0] != '/')
 		ft_strcat(dest, "/");
 	ft_strcat(dest, ptr);
 	free(cmd[1]);

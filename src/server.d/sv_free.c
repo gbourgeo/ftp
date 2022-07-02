@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 22:27:23 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/02/06 17:43:30 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/02 10:13:53 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void			sv_free_data(t_data *data)
 	ft_close(&data->sock_fd);
 	if (data->file != MAP_FAILED)
 		munmap(data->file, data->fsize);
+	data->file = MAP_FAILED;
 	data->fsize = -1;
 	ft_close(&data->ffd);
 }
