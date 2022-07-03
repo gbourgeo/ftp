@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 15:46:03 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/07/02 09:37:53 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/03 13:43:26 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,11 @@ int			cl_command_exec_sv(t_server *sv, t_client *cl)
 					cmd->data_socket_state = DATA_SOCKET_SEND;
 				else if (ft_strncmp(cmd->full_cmd, "RETR ", 5) == 0)
 					cmd->data_socket_state = DATA_SOCKET_RECEIVE;
+			}
+			else if (ft_strncmp(cmd->full_cmd, "CWD ", 4) == 0)
+			{
+				ft_strdel(&sv->working_dir);
+				sv->working_dir = ft_strcdup(ft_strrchr(sv->response, ' '), '\n');
 			}
 			ft_strcpy(cmd->ret_codes, cmd->ret_codes + 1);
 		}

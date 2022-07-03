@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/30 18:18:43 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/07/02 11:03:12 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/03 13:49:13 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,24 +29,26 @@ static int		cl_put_open_file(char *filepath, t_server *sv, t_env *env)
 	return (errnb);
 }
 
-static int		cl_put_get_dest_path(char **cmd)
+static int		cl_put_get_dest_path(char **cmd, char *sv_working_dir)
 {
-	char	*ptr;
+	char	*cmd_1;
+	char	*cmd_2;
 	char	*dest;
 	int		len;
 
-	if ((ptr = ft_strrchr(cmd[1], '/')) == NULL)
-		ptr = cmd[1];
-	dest = (char *)ft_memalloc(ft_strlen(ptr) + ft_strlen(cmd[2]) + 2);
+	if ((cmd_1 = ft_strrchr(cmd[1], '/')) == NULL)
+		cmd_1 = cmd[1];
+	if ((cmd_2 = cmd[2]) == NULL)
+		cmd_2 = sv_working_dir;
+	dest = (char *)ft_memalloc(ft_strlen(cmd_1) + ft_strlen(cmd_2) + 2);
 	if (dest == NULL)
 		return (ERR_MALLOC);
-	if (cmd[2])
-		ft_strcpy(dest, cmd[2]);
+	ft_strcpy(dest, cmd_2);
 	if ((len = ft_strlen(dest)) == 0)
 		len = 1;
-	if (dest[len - 1] != '/' && ptr[0] != '/')
+	if (dest[len - 1] != '/' && cmd_1[0] != '/')
 		ft_strcat(dest, "/");
-	ft_strcat(dest, ptr);
+	ft_strcat(dest, cmd_1);
 	free(cmd[1]);
 	cmd[1] = dest;
 	return (IS_OK);
@@ -67,7 +69,7 @@ int				cl_put(char **cmd, t_server *sv, t_client *cl)
 		return (errnb);
 	free(cmd[0]);
 	cmd[0] = ft_strdup("STOR");
-	errnb = cl_put_get_dest_path(cmd);
+	errnb = cl_put_get_dest_path(cmd, sv->working_dir);
 	if (errnb != IS_OK)
 		return (errnb);
 	ft_strdel(&cmd[2]);

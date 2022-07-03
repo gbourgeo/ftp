@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cl_response.c                                      :+:      :+:    :+:   */
+/*   cl_connect_back.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 19:17:13 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/18 13:17:42 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/03 13:33:28 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,22 +52,5 @@ int			cl_connect_back(t_server *sv)
 		errnb = cl_connect_to(&sv->fd_data, addr, port, NULL);
 	ft_strdel(&addr);
 	ft_strdel(&port);
-	return (errnb);
-}
-
-int			cl_response(t_server *sv)
-{
-	int				errnb;
-
-	errnb = IS_OK;
-	if (!ft_strchr(sv->response, '\n') || !is_valid_response(sv->response))
-		return (IS_OK);
-	if (sv->response[0] > '2')
-	{
-		cl_server_close_data(sv);
-		return (IS_OK);
-	}
-	if (ft_atoi(sv->response) == 227)
-		errnb = cl_connect_back(sv);
 	return (errnb);
 }

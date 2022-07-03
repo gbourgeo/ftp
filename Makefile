@@ -6,7 +6,7 @@
 #    By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/05/12 14:11:41 by gbourgeo          #+#    #+#              #
-#    Updated: 2022/04/17 16:24:07 by gbourgeo         ###   ########.fr        #
+#    Updated: 2022/07/03 13:34:04 by gbourgeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,9 @@ CLI_C	= cl_main.c						\
 		cl_client_loop.c				\
 		cl_client_signals.c				\
 		cl_commands.c					\
+		cl_command_exec.c				\
+		cl_command_func.c				\
+		cl_connect_back.c				\
 		cl_connect_to.c					\
 		cl_get_userinfo.c				\
 		cl_get_username.c				\
@@ -34,9 +37,6 @@ CLI_C	= cl_main.c						\
 		cl_params_get.c					\
 		cl_params.c						\
 		cl_params_1.c					\
-		cl_command_exec.c				\
-		cl_command_func.c				\
-		cl_response.c					\
 		cl_server_new.c					\
 		cl_server_close.c				\
 		cl_server_recv_data.c			\
