@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 03:08:41 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/19 18:25:57 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/17 20:39:24 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,17 @@ static char		*setup_path(char *path, char *pwd)
 	return (ret);
 }
 
+/**
+ * @brief Si "path" ne commence pas par '/' alors "pwd" et "path" sont
+ * joins. Ensuite "path" est parsé afin d'enlever les '.' et '..'.
+ * Enfin, "home" et "path" sont joins.
+ * 
+ * @param path Le chemin à recréer.
+ * @param pwd Le répertoire courant.
+ * @param home Le répertoire toujours joins avant "path".
+ * @return int IS_OK (0) si tout s'est bien passé, ERR_* (> 0) si une erreur
+ * a été rencontrée.
+ */
 int				ft_check_path(char **path, char *pwd, char *home)
 {
 	char		*pth;

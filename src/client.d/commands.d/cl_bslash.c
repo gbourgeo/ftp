@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 19:28:46 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/06/28 11:39:01 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/23 11:12:28 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,18 @@ static void		cl_bslash_child(int fds[2], char **cmd, t_client *cl)
 static int		cl_pid_ret(int status, const char *msg, t_client *cl)
 {
 	if (status == 0)
-		return (IS_OK);
-	wattron(cl->ncu.chatwin, COLOR_PAIR(CL_BACK_RED));
-	wprintw(cl->ncu.chatwin, "ERROR");
-	wattroff(cl->ncu.chatwin, COLOR_PAIR(CL_BACK_RED));
-	wprintw(cl->ncu.chatwin, " %s %d\n", msg, status);
+	{
+		wattron(cl->ncu.chatwin, COLOR_PAIR(CL_BACK_GREEN));
+		wprintw(cl->ncu.chatwin, "SUCCESS");
+		wattroff(cl->ncu.chatwin, COLOR_PAIR(CL_BACK_GREEN));
+	}
+	else
+	{
+		wattron(cl->ncu.chatwin, COLOR_PAIR(CL_BACK_RED));
+		wprintw(cl->ncu.chatwin, "ERROR");
+		wattroff(cl->ncu.chatwin, COLOR_PAIR(CL_BACK_RED));
+		wprintw(cl->ncu.chatwin, " %s %d\n", msg, status);
+	}
 	wrefresh(cl->ncu.chatwin);
 	return (IS_OK);
 }

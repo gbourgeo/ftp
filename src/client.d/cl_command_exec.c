@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/18 15:46:03 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/07/03 13:43:26 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/23 12:14:30 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,7 @@ int			cl_command_exec_sv(t_server *sv, t_client *cl)
 		return (IS_OK);
 	cmd = sv->cmd_list;
 	errnb = IS_OK;
-	if (cmd->ret_codes[0] == ' ')
-	{
-		if ((cl->printtowin = cmd->printtowin) != cl->ncu.chatwin)
-			wclear(cmd->printtowin);
-		wrefresh(cl->printtowin);
-		errnb = cl_server_write(cmd->full_cmd, sv);
-		ft_strcpy(cmd->ret_codes, cmd->ret_codes + 1);
-		ft_strclr(sv->response);
-	}
-	else if (ft_strchr(sv->response, '\n'))
+	if (ft_strchr(sv->response, '\n'))
 	{
 		if (is_valid_response(sv->response))
 		{
@@ -79,20 +70,17 @@ int			cl_command_exec_sv(t_server *sv, t_client *cl)
 			}
 			else if (ft_strncmp(sv->response, "227 ", 4) == 0)
 				errnb = cl_connect_back(sv);
-			else if (ft_strncmp(sv->response, "125 ", 4) == 0)
-			{
-				if (ft_strncmp(cmd->full_cmd, "STOR ", 5) == 0)
-					cmd->data_socket_state = DATA_SOCKET_SEND;
-				else if (ft_strncmp(cmd->full_cmd, "RETR ", 5) == 0)
-					cmd->data_socket_state = DATA_SOCKET_RECEIVE;
-			}
-			else if (ft_strncmp(cmd->full_cmd, "CWD ", 4) == 0)
-			{
-				ft_strdel(&sv->working_dir);
-				sv->working_dir = ft_strcdup(ft_strrchr(sv->response, ' '), '\n');
-			}
 			ft_strcpy(cmd->ret_codes, cmd->ret_codes + 1);
 		}
+		ft_strclr(sv->response);
+	}
+	else if (cmd->ret_codes[0] == ' ')
+	{
+		if ((cl->printtowin = cmd->printtowin) != cl->ncu.chatwin)
+			wclear(cmd->printtowin);
+		wrefresh(cl->printtowin);
+		errnb = cl_server_write(cmd->full_cmd, sv);
+		ft_strcpy(cmd->ret_codes, cmd->ret_codes + 1);
 		ft_strclr(sv->response);
 	}
 	if (cmd->ret_codes[0] == '\0')

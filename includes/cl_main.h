@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/12 18:46:47 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/07/03 13:30:05 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/23 12:13:44 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,7 @@ typedef struct		s_server
 	int					ip_version;
 	int					fd_ctrl;
 	int					fd_data;
-	char				*filename;
 	int					filefd;
-	char				*working_dir;
 	t_buff				rd;
 	t_buff				wr;
 	t_cmd_l				*cmd_list;

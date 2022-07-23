@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 02:21:30 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/07/02 09:56:59 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/14 12:03:10 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,8 @@ int				cl_server_recv_data(t_server *sv, t_client *cl)
 		MSG_DONTWAIT | MSG_NOSIGNAL);
 	if (len <= 0)
 		return (cl_recv_error(sv, len, ERR_RECV));
-	if (sv->filename != NULL)
+	if (sv->filefd > 0)
 	{
-		wprintw(cl->ncu.chatwin, "Opening file : %s\n", sv->filename);
-		wrefresh(cl->ncu.chatwin);
-		if (sv->filefd < 0
-		&& (sv->filefd = open(sv->filename, O_CREAT | O_TRUNC | O_WRONLY,
-			0644)) < 0)
-			return (cl_recv_error(sv, -1, ERR_OPEN));
 		ret = (write(sv->filefd, buff, len) != len) ? ERR : OK;
 	}
 	else

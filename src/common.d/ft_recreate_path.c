@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 22:39:34 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/19 18:32:14 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/14 13:22:28 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,14 @@ static char		*search_back(char *head, char *path)
 	return (head);
 }
 
+/**
+ * @brief Cette fonction recrée le chemin passé en argument en traitant les
+ * '.' et '..' . Exemple:
+ * "/home/work/./projet/test/../file.txt" -> "/home/work/projet/file.txt"
+ * 
+ * @param path Chemin à analyser et recréer si nécessaire.
+ * @return char* Le chemin recréer.
+ */
 char			*ft_recreate_path(char *path)
 {
 	char	*head;

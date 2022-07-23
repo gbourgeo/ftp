@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 16:37:17 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/13 18:30:59 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/23 11:11:56 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,10 @@ int				cl_bslash_cd(char **cmd, t_client *cl)
 	cl->info.env.oldpwd = cl->info.env.pwd;
 	if ((cl->info.env.pwd = ft_strdup(pwd)) == NULL)
 		return (ERR_MALLOC);
-	wprintw(cl->ncu.chatwin, "Changed directory to \"%s\"\n", pwd);
+	wattron(cl->ncu.chatwin, COLOR_PAIR(CL_BACK_GREEN));
+	wprintw(cl->ncu.chatwin, "SUCCESS");
+	wattroff(cl->ncu.chatwin, COLOR_PAIR(CL_BACK_GREEN));
+	wprintw(cl->ncu.chatwin, " Changed directory to \"%s\"\n", pwd);
 	wrefresh(cl->ncu.chatwin);
 	new_cmd = cl_command_new((char *[]){ "\\ls -ap", NULL }, cl->ncu.clistwin, " ");
 	cl->cmd_list = list_insert_head(new_cmd, cl->cmd_list);

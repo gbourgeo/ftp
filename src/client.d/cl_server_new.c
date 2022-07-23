@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 23:54:20 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/07/03 13:31:20 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/07/23 12:13:59 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ t_server * cl_server_new(const char *addr, const char *port)
 		sv->fd_ctrl = -1;
 		sv->fd_data = -1;
 		sv->filefd = -1;
-		sv->working_dir = ft_strdup("/");
 		sv->rd.head = sv->rd.buff;
 		sv->rd.tail = sv->rd.buff;
 		sv->wr.head = sv->wr.buff;
