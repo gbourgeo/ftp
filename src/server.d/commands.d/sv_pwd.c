@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/30 21:04:52 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/17 13:24:06 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:51:23 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@
 ** 500, 501, 502, 421, 550
 */
 
-int				sv_pwd(char **cmds, t_client *cl)
+int				sv_pwd(char **cmds, t_client *cl, t_server *sv)
 {
+	(void)sv;
 	if (!sv_check_err(cl->errnb, sizeof(cl->errnb) / sizeof(cl->errnb[0])))
 		return (sv_response(cl, "421 Closing connection"));
 	if (cmds[1])

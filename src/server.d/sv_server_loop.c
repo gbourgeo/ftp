@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/13 08:45:52 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/12 13:47:43 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:38:12 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,9 @@ static void		sv_check_fd(int ret, fd_set *fdr, fd_set *fdw, t_server *sv)
 	while (cl && ret > 0)
 	{
 		if (FD_ISSET(cl->fd, fdr) && ret-- > 0)
-			cl->errnb[0] = cl->fct_read(cl);
+			cl->errnb[0] = sv_client_recv(cl, sv);
 		if (FD_ISSET(cl->fd, fdw) && ret-- > 0)
-			cl->errnb[1] = cl->fct_write(cl);
+			cl->errnb[1] = sv_client_send(cl);
 		if (cl->data.pasv_fd > 0
 		&& FD_ISSET(cl->data.pasv_fd, fdr) && ret-- > 0)
 			cl->errnb[2] = sv_listen_from(cl, sv);

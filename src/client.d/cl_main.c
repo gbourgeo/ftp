@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/12 18:37:59 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/19 12:55:20 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:28:42 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@
 #include "cl_main.h"
 #include "cl_struct.h"
 
-static void			print_params(t_opt *opts, size_t size)
+t_client		g_client;
+
+static void		print_params(t_opt *opts, size_t size)
 {
 	size_t		i;
 
@@ -38,7 +40,7 @@ static void			print_params(t_opt *opts, size_t size)
 	}
 }
 
-static void			print_usage(const char *progname, const char *progpath)
+static void		print_usage(const char *progname, const char *progpath)
 {
 	dprintf(STDERR_FILENO, "\n"FTP_BOLD"NAME"FTP_RESET"\n\t");
 	dprintf(STDERR_FILENO, "%s - ftp client\n\n", progname);
@@ -57,13 +59,13 @@ static void			print_usage(const char *progname, const char *progpath)
 	dprintf(STDERR_FILENO, "Written by Gilles Bourgeois\n");
 }
 
-int					main(int ac, char **av, char **environ)
+int				main(int ac, char **av, char **environ)
 {
 	t_client	*cl;
 	int			errnb;
 
 	(void)ac;
-	cl = &g_cl;
+	cl = &g_client;
 	errno = 0;
 	if ((errnb = ft_init(cl, sizeof(*cl), environ, av[0])) == IS_OK)
 		if ((errnb = cl_init(environ, cl)) == IS_OK)

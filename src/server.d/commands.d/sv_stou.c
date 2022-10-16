@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 15:51:56 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/01/25 20:55:33 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:50:07 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@
 ** 500, 501, 421, 530
 */
 
-int					sv_stou(char **cmds, t_client *cl)
+int					sv_stou(char **cmds, t_client *cl, t_server *sv)
 {
+	(void)sv;
 	return (sv_response(cl, "502 %s unimplemented command", cmds[0]));
 }
 

@@ -6,18 +6,20 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 17:11:36 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/12 00:28:47 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:27:59 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cl_main.h"
+
+extern t_client	g_client;
 
 static void		cl_resize_window(int sig)
 {
 	t_client	*cl;
 	int			errnb;
 
-	cl = &g_cl;
+	cl = &g_client;
 	if (sig != SIGWINCH)
 		return ;
 	cl_ncurses_end(cl);

@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/12 14:48:27 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/12 13:45:25 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:29:58 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 #endif
 #include <unistd.h>
 #include "sv_main.h"
+
+/*
+** Global (server structure)
+*/
+t_server		g_server;
 
 static void		print_params(t_opt *opts, size_t size)
 {
@@ -58,7 +63,7 @@ int				main(int ac, char **av, char **environ)
 	int				errnb[2];
 
 	(void)ac;
-	sv = &g_serv;
+	sv = &g_server;
 	errnb[0] = IS_OK;
 	errnb[1] = IS_OK;
 	if ((errnb[0] = ft_init(sv, sizeof(*sv), environ, av[0])) == IS_OK)

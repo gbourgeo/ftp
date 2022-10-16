@@ -6,12 +6,14 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/09 06:26:06 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/05/01 15:36:57 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:27:12 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <time.h>
 #include "cl_main.h"
+
+extern t_client g_client;
 
 static void		cl_timeout(t_client *cl)
 {
@@ -33,7 +35,7 @@ static void		cl_sig_hdlr(int sig)
 {
 	t_client	*cl;
 
-	cl = &g_cl;
+	cl = &g_client;
 	wattron(cl->ncu.chatwin, COLOR_PAIR(CL_RED));
 	wprintw(cl->ncu.chatwin, "\n********************");
 	wattron(cl->ncu.chatwin, COLOR_PAIR(CLIENT_TEXT_COLOR));

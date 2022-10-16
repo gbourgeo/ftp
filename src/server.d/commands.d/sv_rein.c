@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 18:19:18 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/17 13:24:57 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:57:26 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 ** 500, 502
 */
 
-int					sv_rein(char **cmds, t_client *cl)
+int					sv_rein(char **cmds, t_client *cl, t_server *sv)
 {
 	int		err;
 
@@ -31,7 +31,7 @@ int					sv_rein(char **cmds, t_client *cl)
 		return (sv_response(cl, "421 Closing connection"));
 	if (cmds[1])
 		return (sv_response(cl, "500 syntax error"));
-	if ((err = sv_client_init(cl, &g_serv)) != IS_OK)
+	if ((err = sv_client_init(cl, sv)) != IS_OK)
 		return (sv_response(cl, "500 internal error (%s)", ft_get_error(err)));
 	return (sv_response(cl, "220 client reinitialised"));
 }

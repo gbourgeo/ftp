@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/12 14:49:14 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/02/06 17:42:36 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:55:16 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,6 @@ typedef struct		s_client
 	int				version;
 	int				fd;
 	int				errnb[5];
-	int				(*fct_read)();
-	int				(*fct_write)();
 	t_buff			rd;
 	t_buff			wr;
 	char			*home;
@@ -152,11 +150,6 @@ typedef struct		s_server
 	t_client		*clients;
 	int				connected;
 }					t_server;
-
-/*
-** Global (server structure)
-*/
-struct s_server		g_serv;
 
 /*
 ** Server Options structure
@@ -207,7 +200,7 @@ int					sv_save_user(t_user *user, t_client *cl, t_server *sv);
 */
 
 int					sv_check_option(int option, int value);
-int					sv_new_pid(char **cmds, t_client *cl, char *opt);
+int					sv_new_pid(char **cmds, char *opt, t_client *cl, t_server *sv);
 int					sv_check_pid(t_client *cl, t_server *sv);
 int					sv_init_sig(t_server *sv);
 int					sv_server_accept(int version, t_server *sv);
@@ -229,7 +222,7 @@ t_user				*sv_getuserbyname(t_user *users, const char *name);
 
 char				*sv_client_home(const char *dir, t_user *us, t_server *sv);
 int					sv_client_init(t_client *cl, t_server *sv);
-int					sv_client_recv(t_client *cl);
+int					sv_client_recv(t_client *cl, t_server *sv);
 int					sv_client_send(t_client *cl);
 int					sv_client_write(const char *str, t_client *cl);
 int					sv_client_nwrite(const char *str, int len, t_client *cl);
@@ -257,12 +250,12 @@ t_command			*sv_commands(int getsize);
 ** int					sv_smnt(char **cmds, t_client *cl);
 */
 
-int					sv_user(char **cmds, t_client *cl);
-int					sv_pass(char **cmds, t_client *cl);
-int					sv_cwd(char **cmds, t_client *cl);
-int					sv_cdup(char **cmds, t_client *cl);
-int					sv_rein(char **cmds, t_client *cl);
-int					sv_quit(char **cmds, t_client *cl);
+int					sv_user(char **cmds, t_client *cl, t_server *sv);
+int					sv_pass(char **cmds, t_client *cl, t_server *sv);
+int					sv_cwd(char **cmds, t_client *cl, t_server *sv);
+int					sv_cdup(char **cmds, t_client *cl, t_server *sv);
+int					sv_rein(char **cmds, t_client *cl, t_server *sv);
+int					sv_quit(char **cmds, t_client *cl, t_server *sv);
 
 /*
 ** Transfert Parameter Commands
@@ -270,10 +263,10 @@ int					sv_quit(char **cmds, t_client *cl);
 ** int					sv_mode(char **cmds, t_client *cl);
 */
 
-int					sv_port(char **cmds, t_client *cl);
-int					sv_pasv(char **cmds, t_client *cl);
+int					sv_port(char **cmds, t_client *cl, t_server *sv);
+int					sv_pasv(char **cmds, t_client *cl, t_server *sv);
 int					sv_pasv_listen(char *port, t_client *cl);
-int					sv_type(char **cmds, t_client *cl);
+int					sv_type(char **cmds, t_client *cl, t_server *sv);
 
 /*
 ** FTP Service Commands
@@ -289,16 +282,16 @@ int					sv_type(char **cmds, t_client *cl);
 ** int					sv_noop(char **cmds, t_client *cl);
 */
 
-int					sv_retr(char **cmds, t_client *cl);
-int					sv_stor(char **cmds, t_client *cl);
-int					sv_stou(char **cmds, t_client *cl);
-int					sv_dele(char **cmds, t_client *cl);
-int					sv_rmd(char **cmds, t_client *cl);
-int					sv_mkd(char **cmds, t_client *cl);
-int					sv_pwd(char **cmds, t_client *cl);
-int					sv_list(char **cmds, t_client *cl);
-int					sv_nlst(char **cmds, t_client *cl);
-int					sv_help(char **cmds, t_client *cl);
+int					sv_retr(char **cmds, t_client *cl, t_server *sv);
+int					sv_stor(char **cmds, t_client *cl, t_server *sv);
+int					sv_stou(char **cmds, t_client *cl, t_server *sv);
+int					sv_dele(char **cmds, t_client *cl, t_server *sv);
+int					sv_rmd(char **cmds, t_client *cl, t_server *sv);
+int					sv_mkd(char **cmds, t_client *cl, t_server *sv);
+int					sv_pwd(char **cmds, t_client *cl, t_server *sv);
+int					sv_list(char **cmds, t_client *cl, t_server *sv);
+int					sv_nlst(char **cmds, t_client *cl, t_server *sv);
+int					sv_help(char **cmds, t_client *cl, t_server *sv);
 int					sv_nlst_exec(char *opt, char **arg, t_client *cl);
 int					sv_retr_exec(char *opt, char **cmds, t_client *cl);
 int					sv_stor_exec(char *opt, char **cmds, t_client *cl);
@@ -307,7 +300,7 @@ int					sv_stor_exec(char *opt, char **cmds, t_client *cl);
 ** Special Commands
 */
 
-int					sv_regt(char **cmds, t_client *cl);
+int					sv_regt(char **cmds, t_client *cl, t_server *sv);
 
 /*
 ** Commands Help

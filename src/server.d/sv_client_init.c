@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 15:00:11 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/02/06 17:43:16 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:34:26 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ int				sv_client_init(t_client *cl, t_server *sv)
 {
 	socklen_t	len;
 
-	cl->fct_read = sv_client_recv;
-	cl->fct_write = sv_client_send;
 	cl->rd.head = cl->rd.buff;
 	cl->rd.tail = cl->rd.head;
 	cl->rd.len = CMD_BUFF_SIZE;

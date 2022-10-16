@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 15:46:41 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/07 20:45:43 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:48:27 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@
 ** 500
 */
 
-int				sv_quit(char **cmds, t_client *cl)
+int				sv_quit(char **cmds, t_client *cl, t_server *sv)
 {
+	(void)sv;
 	if (cmds[1])
 		return (sv_response(cl, "500 syntax error"));
 	cl->errnb[4] = ERR_DISCONNECT;

@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 19:18:25 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/17 13:26:26 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:49:32 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@
 ** 500, 501, 502, 421, 530, 550
 */
 
-int				sv_rmd(char **cmds, t_client *cl)
+int				sv_rmd(char **cmds, t_client *cl, t_server *sv)
 {
 	char	*path;
 	int		errnb;
 
 	if (!sv_check_err(cl->errnb, sizeof(cl->errnb) / sizeof(cl->errnb[0])))
 		return (sv_response(cl, "421 Closing connection"));
-	if (GET_BIT(g_serv.options, sv_user_mode) && !cl->login.logged)
+	if (GET_BIT(sv->options, sv_user_mode) && !cl->login.logged)
 		return (sv_response(cl, "530 not logged in"));
 	if (!cmds[1] || !cmds[1][0] || !sv_validpathname(cmds[1]))
 		return (sv_response(cl, "501 %s", ft_get_error(ERR_NB_PARAMS)));

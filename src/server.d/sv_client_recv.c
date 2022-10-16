@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/26 23:20:31 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/01/30 20:30:07 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:38:45 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include "sv_main.h"
 
-static int		sv_client_commands(char **cmd, t_client *cl)
+static int		sv_client_commands(char **cmd, t_client *cl, t_server *sv)
 {
 	t_command	*commands;
 	long		i;
@@ -29,32 +29,32 @@ static int		sv_client_commands(char **cmd, t_client *cl)
 			errnb = sv_change_working_directory(cl->home, cl->pwd);
 			if (errnb != IS_OK)
 				return (sv_response(cl, "550 %s", ft_get_error(errnb)));
-			return (commands[i].func(cmd, cl));
+			return (commands[i].func(cmd, cl, sv));
 		}
 		else
 			i++;
 	return (sv_response(cl, "500 Unknown command"));
 }
 
-static int		sv_client_precommands(t_client *cl)
+static int		sv_client_precommands(t_client *cl, t_server *sv)
 {
 	char		buff[CMD_BUFF_SIZE + 1];
 	char		**cmd;
 	int			errnb;
 
 	ft_ringbuffcpy(buff, sizeof(buff), &cl->rd);
-	printf("Client "FTP_GREEN"%d"FTP_RESET": Command: %s\n", cl->fd, buff);
+	printf("Client "FTP_GREEN"%d"FTP_RESET": Command: %s\n", cl->fd, buff); // ??
 	if (!(cmd = ft_split_whitespaces(buff)))
 		return (sv_response(cl, "500 Internal error (memory alloc. failed)"));
 	if (!cmd[0] || !cmd[0][0])
 		errnb = IS_OK;
 	else
-		errnb = sv_client_commands(cmd, cl);
+		errnb = sv_client_commands(cmd, cl, sv);
 	ft_tabdel(&cmd);
 	return (errnb);
 }
 
-int				sv_client_recv(t_client *cl)
+int				sv_client_recv(t_client *cl, t_server *sv)
 {
 	int		ret;
 	int		errnb;
@@ -66,7 +66,7 @@ int				sv_client_recv(t_client *cl)
 	{
 		if (*cl->rd.tail == '\n')
 		{
-			if ((errnb = sv_client_precommands(cl)) != IS_OK)
+			if ((errnb = sv_client_precommands(cl, sv)) != IS_OK)
 				return (errnb);
 			continue ;
 		}

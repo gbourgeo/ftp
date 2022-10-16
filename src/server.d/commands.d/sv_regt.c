@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 02:10:06 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/17 13:24:45 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:52:00 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,11 @@ static void			print_info(char **cmds, t_client *cl, t_server *sv)
 	printf("%s:%s:***:%s:"FTP_RESET".\n", cmds[1], cmds[2], cmds[4]);
 }
 
-int					sv_regt(char **cmds, t_client *cl)
+int					sv_regt(char **cmds, t_client *cl, t_server *sv)
 {
-	t_server	*sv;
 	t_user		*users;
 	int			errnb;
 
-	sv = &g_serv;
 	users = sv->users;
 	if (!sv_check_err(cl->errnb, sizeof(cl->errnb) / sizeof(cl->errnb[0])))
 		return (sv_response(cl, "421 Closing connection"));

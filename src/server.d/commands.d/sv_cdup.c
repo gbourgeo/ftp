@@ -6,16 +6,17 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 17:53:57 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/08 18:26:25 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:52:58 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sv_main.h"
 #include "sv_struct.h"
 
-int				sv_cdup(char **cmds, t_client *cl)
+int				sv_cdup(char **cmds, t_client *cl, t_server *sv)
 {
-	return (sv_cwd((char **)&(t_cdup){ cmds[0], "..", NULL }, cl));
+	(void)sv;
+	return (sv_cwd((char **)&(t_cdup){ cmds[0], "..", NULL }, cl, sv));
 }
 
 int				sv_cdup_help(t_command *cmd, t_client *cl)

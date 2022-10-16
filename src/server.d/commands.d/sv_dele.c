@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/31 04:51:26 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/19 18:47:17 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:42:45 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@
 ** 500, 501, 502, 421, 530
 */
 
-int				sv_dele(char **cmds, t_client *cl)
+int				sv_dele(char **cmds, t_client *cl, t_server *sv)
 {
 	char	*path;
 	int		errnb;
 
 	path = NULL;
 	errnb = IS_OK;
-	if (GET_BIT(g_serv.options, sv_user_mode) && !cl->login.logged)
+	if (GET_BIT(sv->options, sv_user_mode) && !cl->login.logged)
 		return (sv_response(cl, "530 Please login with USER and PASS."));
 	if (!sv_check_err(cl->errnb, sizeof(cl->errnb) / sizeof(cl->errnb[0])))
 		return (sv_response(cl, "421 Closing connection"));

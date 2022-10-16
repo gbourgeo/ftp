@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 02:07:00 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/04/12 13:48:30 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:30:36 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@
 #include <sys/time.h>
 #include "sv_main.h"
 
+extern t_server	g_server;
+
 static void		sv_signals_hdlr(int sig)
 {
 	t_server	*serv;
 
-	serv = &g_serv;
+	serv = &g_server;
 	print_signal_info(sig, GET_BIT(serv->options, sv_interactive));
 	if (serv->sig[sig] == SIG_ERR)
 		return ;

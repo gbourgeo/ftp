@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 22:41:55 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/17 13:26:00 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:50:29 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,12 @@ static t_type		*sv_firsttype(char type)
 ** 500, 501, 504, 421, 530
 */
 
-int					sv_type(char **cmds, t_client *cl)
+int					sv_type(char **cmds, t_client *cl, t_server *sv)
 {
 	t_type		*type;
 	int			errnb;
 
+	(void)sv;
 	if (!sv_check_err(cl->errnb, sizeof(cl->errnb) / sizeof(cl->errnb[0])))
 		return (sv_response(cl, "421 Closing connection"));
 	if (!cmds[1] || !cmds[1][0])

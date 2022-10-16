@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/23 11:14:10 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/07/02 10:19:00 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:45:53 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <sys/select.h>
 #include "sv_main.h"
 
-static int				sv_pasv_success(char *port, t_client *cl)
+static int				sv_pasv_success(char *port, t_client *cl, t_server *sv)
 {
 	char			addr[INET6_ADDRSTRLEN];
 	unsigned short	nb;
@@ -22,9 +22,9 @@ static int				sv_pasv_success(char *port, t_client *cl)
 	int				errnb;
 
 	i = 0;
-	while (g_serv.addr[cl->version][i])
+	while (sv->addr[cl->version][i])
 	{
-		addr[i] = g_serv.addr[cl->version][i];
+		addr[i] = sv->addr[cl->version][i];
 		if ((cl->version == sv_v4 && addr[i] == '.')
 		|| (cl->version == sv_v6 && addr[i] == ':'))
 			addr[i] = ',';
@@ -34,7 +34,7 @@ static int				sv_pasv_success(char *port, t_client *cl)
 	nb = ft_atoi(port) << 8;
 	errnb = sv_response(cl, "227 =%s,%d,%d (%s)",
 	addr, ft_atoi(port) >> 8, nb >> 8, port);
-	if (GET_BIT(g_serv.options, sv_interactive))
+	if (GET_BIT(sv->options, sv_interactive))
 		printf("Client "FTP_YELLOW"%d"FTP_RESET": Listening to DATA channel (%s %s)\n",
 		cl->fd, addr, port);
 	free(port);
@@ -54,7 +54,7 @@ static unsigned char	sv_random(void)
 	return (c[0] ^ c[1] ^ c[2] ^ c[3]);
 }
 
-static int				sv_pasv_open(t_client *cl)
+static int				sv_pasv_open(t_client *cl, t_server *sv)
 {
 	unsigned short	port;
 	double			nport;
@@ -71,7 +71,7 @@ static int				sv_pasv_open(t_client *cl)
 	if (!sv_pasv_listen(p, cl))
 		return (sv_response(cl, "530 %s", ft_get_error(ERR_OPEN_PORT)));
 	if (cl->data.pasv_fd < FD_SETSIZE)
-		return (sv_pasv_success(p, cl));
+		return (sv_pasv_success(p, cl, sv));
 	ft_close(&cl->data.pasv_fd);
 	return (sv_response(cl, "530 Internal error (select max fd reached)"));
 }
@@ -83,12 +83,12 @@ static int				sv_pasv_open(t_client *cl)
 ** 500, 501, 502, 421, 530
 */
 
-int						sv_pasv(char **cmds, t_client *cl)
+int						sv_pasv(char **cmds, t_client *cl, t_server *sv)
 {
 	ft_strdel(&cl->data.port);
 	ft_close(&cl->data.pasv_fd);
 	ft_close(&cl->data.sock_fd);
-	if (GET_BIT(g_serv.options, sv_user_mode) && !cl->login.logged)
+	if (GET_BIT(sv->options, sv_user_mode) && !cl->login.logged)
 		return (sv_response(cl, "530 Please login with USER and PASS"));
 	if (!sv_check_err(cl->errnb, sizeof(cl->errnb) / sizeof(cl->errnb[0])))
 		return (sv_response(cl, "421 Closing connection"));
@@ -96,7 +96,7 @@ int						sv_pasv(char **cmds, t_client *cl)
 		return (sv_response(cl, "501 Syntax error"));
 	if (cl->data.pid > 0)
 		return (sv_response(cl, "425 Transfert in progress"));
-	return (sv_pasv_open(cl));
+	return (sv_pasv_open(cl, sv));
 }
 
 /*

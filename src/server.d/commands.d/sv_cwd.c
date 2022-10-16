@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/14 14:18:51 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/17 13:21:00 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:41:01 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ static int		sv_cwd_change(char *cwd, char *cmd, t_client *cl)
 ** 500, 501, 502, 421, 530, 550
 */
 
-int				sv_cwd(char **cmds, t_client *cl)
+int				sv_cwd(char **cmds, t_client *cl, t_server *sv)
 {
 	char		cwd[MAXPATHLEN];
 	char		*dup;
 	int			ret;
 
-	if (GET_BIT(g_serv.options, sv_user_mode) && !cl->login.logged)
+	if (GET_BIT(sv->options, sv_user_mode) && !cl->login.logged)
 		return (sv_response(cl, "530 Please login with USER and PASS."));
 	if (!sv_check_err(cl->errnb, sizeof(cl->errnb) / sizeof(cl->errnb[0])))
 		return (sv_response(cl, "421 Closing connection"));

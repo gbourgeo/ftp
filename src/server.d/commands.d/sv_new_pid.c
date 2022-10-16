@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 15:56:52 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/05/30 13:23:34 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:54:31 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	sv_preprocess(char **cmds, t_client *cl, char *opt)
 	return (cl->data.function(opt, cmds, cl));
 }
 
-int			sv_new_pid(char **cmds, t_client *cl, char *opt)
+int			sv_new_pid(char **cmds, char *opt, t_client *cl, t_server *sv)
 {
 	int			errnb;
 
@@ -40,10 +40,10 @@ int			sv_new_pid(char **cmds, t_client *cl, char *opt)
 	{
 		errnb = sv_preprocess(cmds, cl, opt);
 		ft_tabdel(&cmds);
-		sv_server_end(&g_serv, 0);
+		sv_server_end(sv, 0);
 		exit(errnb);
 	}
-	if (GET_BIT(g_serv.options, sv_interactive))
+	if (GET_BIT(sv->options, sv_interactive))
 		printf("Client "FTP_GREEN"%d"FTP_RESET": Transfert to DATA channel started\n",
 		cl->fd);
 	sv_free_data(&cl->data);

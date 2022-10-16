@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 15:19:32 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/03/17 13:22:30 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:44:56 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,10 @@
 ** 332
 */
 
-int				sv_pass(char **cmds, t_client *cl)
+int				sv_pass(char **cmds, t_client *cl, t_server *sv)
 {
-	t_server	*sv;
 	t_user		*member;
 
-	sv = &g_serv;
 	if (!sv_check_err(cl->errnb, sizeof(cl->errnb) / sizeof(cl->errnb[0])))
 		return (sv_response(cl, "421 Closing connection"));
 	if (!cl->login.user)

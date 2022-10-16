@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 01:53:47 by gbourgeo          #+#    #+#             */
-/*   Updated: 2020/02/20 21:30:39 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:50:57 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 ** 331, 332
 */
 
-int				sv_user(char **cmds, t_client *cl)
+int				sv_user(char **cmds, t_client *cl, t_server *sv)
 {
 	if (!sv_check_err(cl->errnb, sizeof(cl->errnb) / sizeof(cl->errnb[0])))
 		return (sv_response(cl, "421 closing connection"));
@@ -29,7 +29,7 @@ int				sv_user(char **cmds, t_client *cl)
 		return (sv_response(cl, "501 Missing parameter"));
 	if (cl->login.logged)
 		return (sv_response(cl, "230 User logged in"));
-	sv_free_login(&cl->login, &g_serv);
+	sv_free_login(&cl->login, sv);
 	sv_assign_ptr(&cl->login.user, cmds[1], cmds);
 	return (sv_response(cl, "331 Please specify the password", cmds[1]));
 }

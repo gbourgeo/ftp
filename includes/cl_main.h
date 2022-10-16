@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/05/12 18:46:47 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/07/23 12:13:44 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:26:13 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,6 @@ typedef struct		s_client
 	t_hist			*hist;
 	int				options;
 }					t_client;
-
-struct s_client		g_cl;
 
 /*
 ** Client functions

@@ -6,7 +6,7 @@
 /*   By: gbourgeo <gbourgeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/06/11 18:09:47 by gbourgeo          #+#    #+#             */
-/*   Updated: 2022/02/06 17:45:19 by gbourgeo         ###   ########.fr       */
+/*   Updated: 2022/10/16 23:56:13 by gbourgeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,14 @@ static int		sv_retr_open_file(char *file, t_data *data)
 ** 500, 501, 421, 530
 */
 
-int				sv_retr(char **cmds, t_client *cl)
+int				sv_retr(char **cmds, t_client *cl, t_server *sv)
 {
 	int			errnb;
 
 	cl->data.file = MAP_FAILED;
 	cl->data.fsize = -1;
 	cl->data.function = sv_retr_exec;
-	if (GET_BIT(g_serv.options, sv_user_mode) && !cl->login.logged)
+	if (GET_BIT(sv->options, sv_user_mode) && !cl->login.logged)
 		return (sv_response(cl, "530 Please login with USER and PASS."));
 	if (!sv_check_err(cl->errnb, sizeof(cl->errnb) / sizeof(cl->errnb[0])))
 		return (sv_response(cl, "421 Closing connection"));
@@ -91,7 +91,7 @@ int				sv_retr(char **cmds, t_client *cl)
 	if ((errnb = ft_check_path(&cmds[1], cl->pwd, cl->home)) != IS_OK
 	|| (errnb = sv_retr_open_file(cmds[1], &cl->data)) != IS_OK
 	|| (errnb = sv_response(cl, "125 Ready for transfert")) != IS_OK
-	|| (errnb = sv_new_pid(cmds, cl, NULL)) != IS_OK)
+	|| (errnb = sv_new_pid(cmds, NULL, cl, sv)) != IS_OK)
 		errnb = sv_response(cl, "451 Internal error (%s)", ft_get_error(errnb));
 	return (errnb);
 }
